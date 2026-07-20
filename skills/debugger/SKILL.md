@@ -5,7 +5,7 @@ description: >
   minimal fixes. Triggers on: debug, diagnose, trace, root cause, error, fix,
   failing test, stack trace, panic, crash.
 license: MIT
-compatibility: opencode
+clients: [opencode, claude, copilot]
 ---
 
 # Debugger

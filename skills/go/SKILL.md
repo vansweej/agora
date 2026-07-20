@@ -5,7 +5,7 @@ description: >
   or goroutines. Triggers on: go, golang, go.mod, go.sum, goroutine,
   golangci-lint, gofmt, goimports.
 license: MIT
-compatibility: opencode
+clients: [opencode, claude, copilot]
 ---
 
 # Go

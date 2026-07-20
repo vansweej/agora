@@ -4,7 +4,7 @@ description: >
   Use when writing, implementing, or refactoring code. Triggers on: implement,
   build, create, write, add feature, fix bug, refactor, generate code.
 license: MIT
-compatibility: opencode
+clients: [opencode, claude, copilot]
 ---
 
 # Programmer

@@ -1,5 +1,5 @@
 ---
-description: Socratic sparring partner for feature discussions using Claude Opus 4.6
+description: Socratic sparring partner for feature discussions using Claude Opus 4.8
 mode: primary
 model: github-copilot/claude-opus-4.8
 temperature: 0.5

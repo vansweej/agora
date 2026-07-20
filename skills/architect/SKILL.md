@@ -6,7 +6,7 @@ description: >
   changes. Triggers on: architect, design, plan, structure, ADR, system design,
   technical approach, evaluate options, scalability, dependencies, refactor strategy.
 license: MIT
-compatibility: opencode
+clients: [opencode, claude, copilot]
 ---
 
 # Architect

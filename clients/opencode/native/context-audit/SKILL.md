@@ -7,7 +7,6 @@ description: >
   AGENTS.md rules, skills, agents, MCP servers, and custom tools from disk.
   Returns a health score with specific fixes.
 license: MIT
-compatibility: opencode
 ---
 
 # Context Audit

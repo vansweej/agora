@@ -5,7 +5,7 @@ description: >
   investigating test failures. Triggers on: test, coverage, unit test,
   integration test, failing test, spec, assert.
 license: MIT
-compatibility: opencode
+clients: [opencode, claude, copilot]
 ---
 
 # Tester

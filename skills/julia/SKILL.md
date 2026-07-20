@@ -5,7 +5,7 @@ description: >
   Pkg, or the Julia REPL. Triggers on: julia, pkg, Project.toml, Manifest.toml,
   juliaformatter, runtests.jl, test.jl.
 license: MIT
-compatibility: opencode
+clients: [opencode, claude, copilot]
 ---
 
 # Julia

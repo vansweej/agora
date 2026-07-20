@@ -5,7 +5,7 @@ description: >
   Stack, Cabal, or GHC. Triggers on: haskell, stack, cabal, ghc, hlint, ormolu,
   hspec, quickcheck, stack.yaml, .cabal.
 license: MIT
-compatibility: opencode
+clients: [opencode, claude, copilot]
 ---
 
 # Haskell

@@ -5,7 +5,7 @@ description: >
   produce insights, summaries, tradeoffs, or recommendations. Triggers on:
   analyze, understand, explain, investigate, research, assess, compare.
 license: MIT
-compatibility: opencode
+clients: [opencode, claude, copilot]
 ---
 
 # Analyst

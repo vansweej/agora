@@ -5,7 +5,7 @@ description: >
   security, and best practices. Triggers on words like: review, check, audit,
   inspect, assess.
 license: MIT
-compatibility: opencode
+clients: [opencode, claude, copilot]
 ---
 
 # Code Reviewer

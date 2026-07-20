@@ -5,7 +5,7 @@ description: >
   naming, imports, type rules, error handling, and test structure.
   Triggers on: typescript, ts, bun, biome, test, interface, type, Result.
 license: MIT
-compatibility: opencode
+clients: [opencode, claude, copilot]
 ---
 
 # TypeScript

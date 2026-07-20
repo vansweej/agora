@@ -2,3 +2,4 @@ result
 result-*
 node_modules
 bun.lock
+build/

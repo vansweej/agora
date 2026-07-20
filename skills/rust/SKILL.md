@@ -5,7 +5,7 @@ description: >
   cargo, crates, or Cargo.toml. Triggers on: rust, cargo, crate, Cargo.toml,
   rustc, clippy, tarpaulin, rustfmt.
 license: MIT
-compatibility: opencode
+clients: [opencode, claude, copilot]
 ---
 
 # Rust

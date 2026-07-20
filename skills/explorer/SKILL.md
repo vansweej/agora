@@ -6,7 +6,7 @@ description: >
   navigate, trace, find, map, where is, how does, what is, show me, walk me
   through, understand.
 license: MIT
-compatibility: opencode
+clients: [opencode, claude, copilot]
 ---
 
 # Explorer

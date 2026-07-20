@@ -5,7 +5,7 @@ description: >
   CMake, or Make. Triggers on: c++, cpp, cmake, CMakeLists, clang, gcc,
   ctest, conan, vcpkg, clang-tidy, clang-format.
 license: MIT
-compatibility: opencode
+clients: [opencode, claude, copilot]
 ---
 
 # C++

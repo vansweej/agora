@@ -5,7 +5,7 @@ description: >
   uv, Ruff, mypy, or pytest. Triggers on: python, uv, ruff, mypy, pytest,
   pyproject.toml, py, pydantic, fastapi.
 license: MIT
-compatibility: opencode
+clients: [opencode, claude, copilot]
 ---
 
 # Python

@@ -7,7 +7,7 @@ description: >
   setup, configuration, reference, API docs, OpenAPI, swagger, docstring, JSDoc, TSDoc, godoc,
   rustdoc, mkdocs, docusaurus, changelog, release notes, runbook, troubleshooting, FAQ.
 license: MIT
-compatibility: opencode
+clients: [opencode, claude, copilot]
 ---
 
 # Documenter
