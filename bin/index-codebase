@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# Index a git repository for semantic codebase search.
+#
+# Usage:
+#   index-codebase                        # index current directory
+#   index-codebase <repo-path>            # index a specific repo
+#   index-codebase [--force] [--ttl <n>]  # flags forwarded to the CLI
+#   index-codebase --purge-only           # TTL + dead-repo purge (no Ollama needed)
+#   index-codebase --purge-repo <path>    # remove a specific repo from the index (no Ollama needed)
+#
+# All flags are forwarded verbatim to:
+#   bun run index-codebase <repo-path> [flags]
+#
+# Requires AI_CODING_MONOREPO to be set (done globally by Home Manager).
+
+set -euo pipefail
+
+# Resolve bun — probe common install locations before falling back to PATH.
+# Covers: default bun installer (~/.bun), Nix user/system profiles, system paths.
+_bun="bun"
+for _candidate in "$HOME/.bun/bin/bun" "$HOME/.nix-profile/bin/bun" "/nix/var/nix/profiles/default/bin/bun" "/usr/local/bin/bun" "/usr/bin/bun"; do
+  [ -x "$_candidate" ] && _bun="$_candidate" && break
+done
+
+monorepo="${AI_CODING_MONOREPO:?AI_CODING_MONOREPO is not set — run: home-manager switch}"
+
+# --purge-only and --purge-repo need no default repo path — forward everything as-is
+for arg in "$@"; do
+  if [[ "$arg" == "--purge-only" ]] || [[ "$arg" == "--purge-repo" ]]; then
+    exec "$_bun" run --cwd "$monorepo" index-codebase "$@"
+  fi
+done
+
+# No positional arg, or first arg is a flag → prepend current directory
+if [[ $# -eq 0 ]] || [[ "$1" == --* ]]; then
+  exec "$_bun" run --cwd "$monorepo" index-codebase "$PWD" "$@"
+fi
+
+# First arg is the repo path — resolve to absolute before forwarding
+repo="$(cd "$1" && pwd)"
+shift
+exec "$_bun" run --cwd "$monorepo" index-codebase "$repo" "$@"
