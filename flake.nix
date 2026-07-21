@@ -73,6 +73,24 @@
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [ bun ];
         };
+
+        # Locks the aios-agents-opencode flagship contract: fails
+        # `nix flake check` if the decomposition regresses (a mode:subagent
+        # agent leaking in, context-audit going missing, an ai-coding-coupled
+        # dir reappearing, etc.).
+        checks.aios-agents-opencode = pkgs.runCommand "check-aios-agents-opencode" { } ''
+          agents=$(ls ${aios-agents-opencode}/agents | wc -l)
+          skills=$(ls ${aios-agents-opencode}/skills | wc -l)
+          [ "$agents" -eq 6 ]  || { echo "expected 6 agents, got $agents"; exit 1; }
+          [ "$skills" -eq 16 ] || { echo "expected 16 skills, got $skills"; exit 1; }
+          test -e ${aios-agents-opencode}/AGENTS.md
+          test -e ${aios-agents-opencode}/skills/context-audit/SKILL.md
+          test ! -e ${aios-agents-opencode}/commands
+          test ! -e ${aios-agents-opencode}/tools
+          test ! -e ${aios-agents-opencode}/bin
+          test ! -e ${aios-agents-opencode}/package.json
+          touch $out
+        '';
       }
     );
 }
