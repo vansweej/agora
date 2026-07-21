@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # renderers/render.sh — drives the OpenCode -> Claude renderer over the
 # shared-15 skills and the 6 persona agents, producing Claude-format skills
-# under build/clients/claude/skills/<name>/SKILL.md.
+# under clients/claude/generated/skills/<name>/SKILL.md.
 #
 # Uses `opencode run` headless with a dedicated, tools-disabled primary
 # agent (.opencode/agent/renderer.md) so the renderer can never write files,
@@ -9,8 +9,16 @@
 # itself (renderers/opencode-to-claude.md) is the single source of truth,
 # passed in the message rather than duplicated into the agent.
 #
-# Output is CI-only / not committed (build/ is gitignored). Idempotent: the
-# output directory is wiped before each run.
+# Output IS COMMITTED (Option A): clients/claude/generated/ is authored-once,
+# rendered-and-committed generated source, marked with a DO-NOT-EDIT header
+# per file (see renderers/opencode-to-claude.md). This is a manual, on-demand,
+# local step — run it (inside `nix develop`, so sha256sum/coreutils are
+# guaranteed present) whenever a shared skill, persona agent, or the renderer
+# prompt itself changes, then commit the result. `checks.claude-render-fresh`
+# in flake.nix is the pure (no-LLM) safety net that fails `nix flake check`
+# if the committed tree drifts out of sync with its sources.
+#
+# Idempotent: the output directory is wiped before each run.
 #
 # Usage: renderers/render.sh [--attach http://localhost:PORT]
 
@@ -18,7 +26,8 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROMPT_FILE="$REPO_ROOT/renderers/opencode-to-claude.md"
-OUT_DIR="$REPO_ROOT/build/clients/claude/skills"
+OUT_DIR="$REPO_ROOT/clients/claude/generated/skills"
+MANIFEST="$REPO_ROOT/clients/claude/generated/manifest.json"
 MODEL="github-copilot/claude-opus-4.8"
 AGENT="renderer"
 
@@ -64,20 +73,14 @@ SOURCE PATH: $source_path" \
     --file="$source_path" \
     "${ATTACH_ARGS[@]}")"
 
-  text="$(printf '%s\n' "$raw_json" | python3 -c '
-import json, sys
-last = None
-for line in sys.stdin:
-    line = line.strip()
-    if not line:
-        continue
-    obj = json.loads(line)
-    if obj.get("type") == "text":
-        last = obj["part"]["text"]
-if last is None:
-    sys.exit(2)
-print(last)
-')"
+  # Extract .part.text from the LAST {"type":"text",...} JSONL event via jq
+  # (not python3: macOS's /usr/bin/python3 xcrun-stub fails to resolve inside
+  # `nix develop`, since the clang toolchain's DEVELOPER_DIR points at a Nix
+  # store path). jq handles concatenated JSON docs natively with -s (slurp).
+  text="$(printf '%s\n' "$raw_json" | jq -s -r '
+    [.[] | select(.type == "text")]
+    | if length == 0 then empty else (last | .part.text) end
+  ')"
 
   if [[ -z "$text" ]]; then
     echo "!! render failed (no text output) for $source_path" >&2
@@ -107,5 +110,30 @@ if [[ "$FAILED" -ne 0 ]]; then
   echo "==> render.sh completed WITH FAILURES" >&2
   exit 1
 fi
+
+# ── Emit provenance manifest ────────────────────────────────────────────────
+# Maps each authored SOURCE path -> sha256 of its current on-disk content, so
+# a later PURE flake check (checks.claude-render-fresh) can recompute these
+# and fail if any source — or the renderer prompt itself — changed since this
+# render, WITHOUT needing the LLM/network/creds in the check. The renderer
+# prompt is included: changing the transform rules should force a re-render
+# just like changing a source file.
+echo "==> Writing $MANIFEST"
+{
+  printf '{\n'
+  first=1
+  emit() {
+    local rel="$1"
+    local h
+    h="$(cd "$REPO_ROOT" && sha256sum "$rel" | cut -d' ' -f1)"
+    if [[ $first -eq 0 ]]; then printf ',\n'; fi
+    printf '  "%s": "%s"' "$rel" "$h"
+    first=0
+  }
+  emit "renderers/opencode-to-claude.md"
+  for name in "${SHARED_SKILLS[@]}"; do emit "skills/$name/SKILL.md"; done
+  for name in "${PERSONA_AGENTS[@]}"; do emit "agents/$name.md"; done
+  printf '\n}\n'
+} > "$MANIFEST"
 
 echo "==> render.sh completed: $(find "$OUT_DIR" -name SKILL.md | wc -l | tr -d ' ') files written to $OUT_DIR"
