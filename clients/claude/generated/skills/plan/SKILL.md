@@ -2,8 +2,8 @@
 name: plan
 description: High-level planning and analysis using Claude Opus 4.8
 model: opus
-disallowedTools: Write, Edit
-permissionMode: plan
+disable-model-invocation: true
+disallowed-tools: Write Edit
 ---
 
 <!-- DO NOT EDIT — generated from agents/plan.md by agora/renderers/opencode-to-claude.md -->
@@ -79,4 +79,4 @@ Rules:
 - Prefer the Result pattern for error handling in all suggested code snippets
 - Follow the conventions in AGENTS.md for naming, types, and structure
 
-<!-- render-note: dropped OpenCode bash allowlist (no Claude equivalent): {"*": deny, "git log*": allow, "git diff*": allow, "git status": allow}; tool use now governed by permissionMode: plan -->
+<!-- render-note: dropped OpenCode bash allowlist (no Claude equivalent): {"*": deny, "git log*": allow, "git diff*": allow, "git status": allow}; tool use now governed by Claude Code permission settings plus disallowed-tools/allowed-tools -->

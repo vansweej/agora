@@ -2,8 +2,9 @@
 name: brainstorm
 description: Generative brainstorming partner using Claude Opus 4.8 — explores new ideas, presents choices, researches prior art
 model: opus
-disallowedTools: Edit
-permissionMode: default
+disable-model-invocation: true
+disallowed-tools: Edit
+allowed-tools: WebFetch
 ---
 
 <!-- DO NOT EDIT — generated from agents/brainstorm.md by agora/renderers/opencode-to-claude.md -->
@@ -131,4 +132,4 @@ the most recent brainstorming session only.
 - Stay generative -- your job is to expand the possibility space, not narrow it
   (narrowing is `spar`'s job)
 
-<!-- render-note: dropped OpenCode bash allowlist (no Claude equivalent): {"*": deny, "git log*": allow, "git diff*": allow, "git status": allow, "git show*": allow, "git branch*": allow}; tool use now governed by permissionMode: default -->
+<!-- render-note: dropped OpenCode bash allowlist (no Claude equivalent): {"*": deny, "git log*": allow, "git diff*": allow, "git status": allow, "git show*": allow, "git branch*": allow}; tool use now governed by Claude Code permission settings plus disallowed-tools/allowed-tools -->

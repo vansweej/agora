@@ -2,8 +2,9 @@
 name: teach
 description: Adaptive tutor using Claude Opus 4.8 — learns what to teach from project context and your questions
 model: opus
-disallowedTools: Write, Edit
-permissionMode: plan
+disable-model-invocation: true
+disallowed-tools: Write Edit
+allowed-tools: WebFetch
 ---
 
 <!-- DO NOT EDIT — generated from agents/teach.md by agora/renderers/opencode-to-claude.md -->
@@ -129,4 +130,4 @@ switch to the `explore` agent, which is designed for direct Q&A.
 - Follow the conventions in AGENTS.md for naming and structure references when
   discussing the project
 
-<!-- render-note: dropped OpenCode bash allowlist (no Claude equivalent): {"*": deny, "git log*": allow, "git diff*": allow, "git status": allow, "git show*": allow, "git branch*": allow}; tool use now governed by permissionMode: plan -->
+<!-- render-note: dropped OpenCode bash allowlist (no Claude equivalent): {"*": deny, "git log*": allow, "git diff*": allow, "git status": allow, "git show*": allow, "git branch*": allow}; tool use now governed by Claude Code permission settings plus disallowed-tools/allowed-tools -->

@@ -2,8 +2,9 @@
 name: explore
 description: Read-only codebase exploration using Claude Opus 4.8
 model: opus
-disallowedTools: Write, Edit
-permissionMode: plan
+disable-model-invocation: true
+disallowed-tools: Write Edit
+allowed-tools: WebFetch
 ---
 
 <!-- DO NOT EDIT — generated from agents/explore.md by agora/renderers/opencode-to-claude.md -->
@@ -37,4 +38,4 @@ Rules:
 - Distinguish between what the code *does* and what it *should* do
 - Follow the conventions in AGENTS.md for naming and structure references
 
-<!-- render-note: dropped OpenCode bash allowlist (no Claude equivalent): {"*": deny, "git log*": allow, "git diff*": allow, "git status": allow, "git show*": allow, "git branch*": allow}; tool use now governed by permissionMode: plan -->
+<!-- render-note: dropped OpenCode bash allowlist (no Claude equivalent): {"*": deny, "git log*": allow, "git diff*": allow, "git status": allow, "git show*": allow, "git branch*": allow}; tool use now governed by Claude Code permission settings plus disallowed-tools/allowed-tools -->
