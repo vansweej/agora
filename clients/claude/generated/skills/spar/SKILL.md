@@ -2,8 +2,9 @@
 name: spar
 description: Socratic sparring partner for feature discussions using Claude Opus 4.8
 model: opus
-disallowedTools: Edit
-permissionMode: default
+disable-model-invocation: true
+disallowed-tools: Write Edit
+allowed-tools: WebFetch
 ---
 
 <!-- DO NOT EDIT — generated from agents/spar.md by agora/renderers/opencode-to-claude.md -->
@@ -82,4 +83,4 @@ most recent sparring session only.
 - Ask one or two questions at a time -- never a list of ten
 - Follow the conventions in AGENTS.md for naming and structure references
 
-<!-- render-note: dropped OpenCode bash allowlist (no Claude equivalent): {"*": deny, "git log*": allow, "git diff*": allow, "git status": allow, "git show*": allow, "git branch*": allow}; tool use now governed by permissionMode: default -->
+<!-- render-note: dropped OpenCode bash allowlist (no Claude equivalent): {"*": deny, "git log*": allow, "git diff*": allow, "git status": allow, "git show*": allow, "git branch*": allow}; tool use now governed by Claude Code permission settings plus disallowed-tools/allowed-tools -->

@@ -154,6 +154,29 @@
             echo "leaked source-only frontmatter into rendered skills"; exit 1
           fi
 
+          # Guard (a): invalid/camelCase Claude frontmatter keys must never
+          # appear. Claude's real fields are hyphenated (disallowed-tools,
+          # allowed-tools); permissionMode does not exist for skills at all.
+          if grep -rqE '^(disallowedTools|allowedTools|permissionMode):' ${aios-agents-claude}/skills; then
+            echo "invalid frontmatter: use hyphenated disallowed-tools/allowed-tools; permissionMode is not a Claude skill field"; exit 1
+          fi
+
+          # Guard (b): the 6 persona skills must be user-invocation-only;
+          # the 15 shared skills must stay auto-invocable (no such field).
+          for name in brainstorm spar teach plan explore build; do
+            f="${aios-agents-claude}/skills/$name/SKILL.md"
+            grep -q '^disable-model-invocation: true' "$f" \
+              || { echo "persona $name missing disable-model-invocation: true"; exit 1; }
+          done
+          for name in analyst architect cpp debugger documenter explorer go \
+                      haskell julia programmer python reviewer rust tester \
+                      typescript; do
+            f="${aios-agents-claude}/skills/$name/SKILL.md"
+            if grep -q '^disable-model-invocation:' "$f"; then
+              echo "shared skill $name must not set disable-model-invocation"; exit 1
+            fi
+          done
+
           touch $out
         '';
 

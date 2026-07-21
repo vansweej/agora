@@ -2,7 +2,7 @@
 name: build
 description: Full development using Claude Sonnet 4.6 with all skills and pipeline tools
 model: sonnet
-permissionMode: default
+disable-model-invocation: true
 ---
 
 <!-- DO NOT EDIT — generated from agents/build.md by agora/renderers/opencode-to-claude.md -->
@@ -39,4 +39,4 @@ Each step instruction is self-contained — implement exactly what is described,
 nothing more. Each phase is one commit's worth of work. When working from a
 plan file, implement steps in order within a phase before moving to the next.
 
-<!-- render-note: dropped OpenCode bash allowlist (no Claude equivalent): {"*": allow, "rm -rf /*": deny, "rm -rf /": deny, "dd *": deny, "mkfs*": deny, "shutdown*": deny, "reboot*": deny, ":(){:|:&};:": deny}; tool use now governed by permissionMode: default -->
+<!-- render-note: dropped OpenCode bash allowlist (no Claude equivalent): {"*": allow, "rm -rf /*": deny, "rm -rf /": deny, "dd *": deny, "mkfs*": deny, "shutdown*": deny, "reboot*": deny, ":(){:|:&};:": deny}; tool use now governed by Claude Code permission settings plus disallowed-tools/allowed-tools -->
