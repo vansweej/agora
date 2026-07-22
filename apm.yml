@@ -1,0 +1,7 @@
+name: aios-agents-opencode
+version: 0.1.0
+description: AI-OS agents and skills for OpenCode
+author: Jan Van Sweevelt
+license: MIT
+targets: [opencode]
+includes: auto
