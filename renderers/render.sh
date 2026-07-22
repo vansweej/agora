@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # renderers/render.sh — drives the OpenCode -> Claude renderer over the
 # shared-15 skills and the 6 persona agents, producing Claude-format skills
-# under clients/claude/generated/skills/<name>/SKILL.md.
+# under clients/claude/.apm/skills/<name>/SKILL.md.
 #
 # Uses `opencode run` headless with a dedicated, tools-disabled primary
 # agent (.opencode/agent/renderer.md) so the renderer can never write files,
@@ -9,7 +9,7 @@
 # itself (renderers/opencode-to-claude.md) is the single source of truth,
 # passed in the message rather than duplicated into the agent.
 #
-# Output IS COMMITTED (Option A): clients/claude/generated/ is authored-once,
+# Output IS COMMITTED (Option A): clients/claude/.apm/skills/ is authored-once,
 # rendered-and-committed generated source, marked with a DO-NOT-EDIT header
 # per file (see renderers/opencode-to-claude.md). This is a manual, on-demand,
 # local step — run it (inside `nix develop`, so sha256sum/coreutils are
@@ -18,7 +18,10 @@
 # in flake.nix is the pure (no-LLM) safety net that fails `nix flake check`
 # if the committed tree drifts out of sync with its sources.
 #
-# Idempotent: the output directory is wiped before each run.
+# Idempotent: only the GENERATED skill subdirectories (SHARED_SKILLS +
+# PERSONA_AGENTS names below) are wiped before each run — the two
+# hand-authored native skills (grill-me, grill-with-docs) that live
+# alongside in the same clients/claude/.apm/skills/ directory are untouched.
 #
 # Usage: renderers/render.sh [--attach http://localhost:PORT]
 
@@ -26,8 +29,8 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROMPT_FILE="$REPO_ROOT/renderers/opencode-to-claude.md"
-OUT_DIR="$REPO_ROOT/clients/claude/generated/skills"
-MANIFEST="$REPO_ROOT/clients/claude/generated/manifest.json"
+OUT_DIR="$REPO_ROOT/clients/claude/.apm/skills"
+MANIFEST="$REPO_ROOT/clients/claude/.apm/manifest.json"
 MODEL="github-copilot/claude-opus-4.8"
 AGENT="renderer"
 
@@ -47,8 +50,10 @@ if [[ ! -f "$PROMPT_FILE" ]]; then
   exit 1
 fi
 
-echo "==> Wiping $OUT_DIR for idempotent render"
-rm -rf "$OUT_DIR"
+echo "==> Wiping generated skill subdirectories in $OUT_DIR for idempotent render"
+for name in "${SHARED_SKILLS[@]}" "${PERSONA_AGENTS[@]}"; do
+  rm -rf "$OUT_DIR/$name"
+done
 mkdir -p "$OUT_DIR"
 
 PROMPT_TEXT="$(cat "$PROMPT_FILE")"
@@ -99,11 +104,11 @@ SOURCE PATH: $source_path" \
 }
 
 for name in "${SHARED_SKILLS[@]}"; do
-  render_one "skills/$name/SKILL.md" "$name"
+  render_one ".apm/skills/$name/SKILL.md" "$name"
 done
 
 for name in "${PERSONA_AGENTS[@]}"; do
-  render_one "agents/$name.md" "$name"
+  render_one ".apm/agents/$name.agent.md" "$name"
 done
 
 if [[ "$FAILED" -ne 0 ]]; then
@@ -131,8 +136,8 @@ echo "==> Writing $MANIFEST"
     first=0
   }
   emit "renderers/opencode-to-claude.md"
-  for name in "${SHARED_SKILLS[@]}"; do emit "skills/$name/SKILL.md"; done
-  for name in "${PERSONA_AGENTS[@]}"; do emit "agents/$name.md"; done
+  for name in "${SHARED_SKILLS[@]}"; do emit ".apm/skills/$name/SKILL.md"; done
+  for name in "${PERSONA_AGENTS[@]}"; do emit ".apm/agents/$name.agent.md"; done
   printf '\n}\n'
 } > "$MANIFEST"
 

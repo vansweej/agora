@@ -1,0 +1,7 @@
+name: aios-agents-claude
+version: 0.1.0
+description: AI-OS agents (rendered as skills) and skills for Claude Code
+author: Jan Van Sweevelt
+license: MIT
+targets: [claude]
+includes: auto
