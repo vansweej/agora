@@ -7,7 +7,7 @@ description: >
   technical approach, evaluate options, scalability, dependencies, refactor strategy.
 ---
 
-<!-- DO NOT EDIT — generated from skills/architect/SKILL.md by agora/renderers/opencode-to-claude.md -->
+<!-- DO NOT EDIT — generated from .apm/skills/architect/SKILL.md by agora/renderers/opencode-to-claude.md -->
 
 # Architect
 

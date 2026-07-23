@@ -6,7 +6,7 @@ description: >
   rustc, clippy, tarpaulin, rustfmt.
 ---
 
-<!-- DO NOT EDIT — generated from skills/rust/SKILL.md by agora/renderers/opencode-to-claude.md -->
+<!-- DO NOT EDIT — generated from .apm/skills/rust/SKILL.md by agora/renderers/opencode-to-claude.md -->
 
 # Rust
 

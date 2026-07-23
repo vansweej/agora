@@ -160,8 +160,15 @@ inferred from documentation alone:
   default; `--legacy-skill-paths` correctly restored `.opencode/skills/`.
 - `apm install --target claude` against the `clients/claude` subpath, same
   clean export: zero warnings, 23 skills + 1 rule deployed, `settings.json`
-  never touched, `.claude/rules/claude.md` exactly matches the source
-  instruction body with frontmatter stripped by apm itself.
+  **not in the write plan** (apm never touches it — confirmed), `.claude/rules/claude.md`
+  exactly matches the source instruction body with frontmatter stripped by apm
+  itself. `clients/claude/settings.json` is present in the repo but is
+  **served outside apm**: home-manager deploys it directly to
+  `~/.claude/settings.json` for Jan; apm colleagues can copy its four
+  `permissions.allow` entries manually for prompt-free cerebrum writes, or
+  leave it as-is — Claude prompts per call and the `plan` persona's deferred
+  clause handles any denial gracefully. See `docs/claude-setup.md` for
+  details.
 - `apm compile -t claude` confirmed as a no-op for the instruction ("Claude
   Code reads `.claude/rules/` directly, no further action needed"), and
   `apm compile -g` confirmed as required (generates `AGENTS.md`

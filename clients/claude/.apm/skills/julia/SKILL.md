@@ -6,7 +6,7 @@ description: >
   juliaformatter, runtests.jl, test.jl.
 ---
 
-<!-- DO NOT EDIT — generated from skills/julia/SKILL.md by agora/renderers/opencode-to-claude.md -->
+<!-- DO NOT EDIT — generated from .apm/skills/julia/SKILL.md by agora/renderers/opencode-to-claude.md -->
 
 # Julia
 

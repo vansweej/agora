@@ -6,7 +6,7 @@ description: >
   failing test, stack trace, panic, crash.
 ---
 
-<!-- DO NOT EDIT — generated from skills/debugger/SKILL.md by agora/renderers/opencode-to-claude.md -->
+<!-- DO NOT EDIT — generated from .apm/skills/debugger/SKILL.md by agora/renderers/opencode-to-claude.md -->
 
 # Debugger
 

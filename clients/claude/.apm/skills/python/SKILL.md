@@ -6,7 +6,7 @@ description: >
   pyproject.toml, py, pydantic, fastapi.
 ---
 
-<!-- DO NOT EDIT — generated from skills/python/SKILL.md by agora/renderers/opencode-to-claude.md -->
+<!-- DO NOT EDIT — generated from .apm/skills/python/SKILL.md by agora/renderers/opencode-to-claude.md -->
 
 # Python
 

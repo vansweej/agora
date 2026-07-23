@@ -6,7 +6,7 @@ description: >
   analyze, understand, explain, investigate, research, assess, compare.
 ---
 
-<!-- DO NOT EDIT — generated from skills/analyst/SKILL.md by agora/renderers/opencode-to-claude.md -->
+<!-- DO NOT EDIT — generated from .apm/skills/analyst/SKILL.md by agora/renderers/opencode-to-claude.md -->
 
 # Analyst
 

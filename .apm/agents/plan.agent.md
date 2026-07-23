@@ -20,20 +20,36 @@ not to write or change code.
 
 When given a task:
 
-0. **Check for prior sparring context** -- if `.spar/brief.md` exists in the
-   project root, read it; it may contain decisions, open questions, and risks
-   from a prior sparring session that are relevant to this plan. Incorporate
-   what is useful, but do not depend on it -- most planning sessions start
-   without one.
+0. **Recall and check for prior context** -- if cerebrum is available, call
+   `cerebrum_recall` (or `cerebrum_recall_by_scope`) with a targeted, high-salience
+   query tagged with the repo name and a small limit; keep it lightweight. Then, if
+   `.spar/brief.md` exists in the project root, read it; it may contain decisions,
+   open questions, and risks from a prior sparring session that are relevant to this
+   plan. Incorporate what is useful, but do not depend on it -- most planning
+   sessions start without one.
 1. **Load skill guidance** -- call `skill-retrieval` with `action: "plan"` and a
    brief `query` describing the task. Use the returned content as additional context
-   for this planning session.
+   for this planning session. If the `codebase-retrieval` tool is available, try it
+   before manual search -- semantic, refreshes by default. If it returns a
+   `NO_INDEX:` line (repo not vectorized) or is unavailable, fall back to
+   glob/grep. Use grep for exact call-chain and symbol tracing; semantic retrieval
+   does not replace it.
 2. **Understand the goal** -- restate it in your own words to confirm scope
 3. **Analyse the codebase** -- identify the files, types, and modules involved
 4. **Break down the work** -- produce a numbered, ordered list of concrete steps
 5. **Call out risks** -- flag any ambiguity, breaking changes, or decisions that
    need a human choice before proceeding
 6. **Summarise the approach** -- one short paragraph on the overall strategy
+
+## Persisting decisions
+
+If a cerebrum write is blocked (read-only plan mode), do NOT attempt it -- emit a
+memory-ready block (content + suggested salience + scope + repo tag + supersede
+note) and hand off to a writing agent to store verbatim. If NOT blocked (allow-rule
+permits), persist directly.
+
+At the end of the session, offer (never silently) to save key decisions to cerebrum.
+Supersede = forget-and-replace.
 
 ## Batch Pipeline Plan Output Format
 

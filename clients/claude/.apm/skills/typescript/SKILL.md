@@ -6,7 +6,7 @@ description: >
   Triggers on: typescript, ts, bun, biome, test, interface, type, Result.
 ---
 
-<!-- DO NOT EDIT — generated from skills/typescript/SKILL.md by agora/renderers/opencode-to-claude.md -->
+<!-- DO NOT EDIT — generated from .apm/skills/typescript/SKILL.md by agora/renderers/opencode-to-claude.md -->
 
 # TypeScript
 

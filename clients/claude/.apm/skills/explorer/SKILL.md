@@ -7,7 +7,7 @@ description: >
   through, understand.
 ---
 
-<!-- DO NOT EDIT — generated from skills/explorer/SKILL.md by agora/renderers/opencode-to-claude.md -->
+<!-- DO NOT EDIT — generated from .apm/skills/explorer/SKILL.md by agora/renderers/opencode-to-claude.md -->
 
 # Explorer
 
