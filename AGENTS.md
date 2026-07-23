@@ -45,6 +45,17 @@ skills above.
   `packages` output by design — distribution is via apm and home-manager, not Nix
   store trees.
 
+## Verification (there is no test/lint/typecheck)
+
+This repo has no test suite, linter, or typecheck target. Ignore any generic
+"run tests/lint" instinct. The only verification is the pure drift guard:
+
+    nix develop . --command nix flake check   # checks.claude-render-fresh
+
+It passes for content-only changes (e.g. package.json, docs). It fails with
+`STALE: ...` only if you edited a render source without re-running
+renderers/render.sh (see "Golden rule" above).
+
 ## Repo layout that isn't obvious
 
 - Root `apm.yml` → package `aios-agents-opencode` (`targets: [opencode]`).
@@ -58,6 +69,10 @@ skills above.
 - `commands/`, `tools/`, `bin/` are **home-manager-only** and are NOT part of either
   apm package. They shell out to `$AI_CODING_MONOREPO` (set by Home Manager); they
   do nothing here without that env var.
+- Root `package.json` (`@opencode-ai/plugin`) exists **only** as dev-time
+  types for the three `tools/*.ts`; it is NOT shipped in either apm package
+  and is not a runtime dependency. `bun.lock` and `node_modules/` are
+  gitignored. The tools themselves are home-manager-only.
 
 ## apm gotcha (verified)
 
