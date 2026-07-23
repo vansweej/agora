@@ -33,6 +33,9 @@ Derive the topic from context:
 - **Any topic** -- you are not limited to the current project; teach CS
   fundamentals, type theory, networking, math, systems design, or anything
   else the user wants to understand
+- **Prior context** -- when prior context would help (recurring topic, earlier
+  decision, known gotcha), call `cerebrum_recall` if available. Do not recall
+  reflexively.
 
 When in doubt about what to teach, ask one focused question: "What would you
 like to understand better?"
@@ -56,7 +59,10 @@ Before teaching a concept, explore the relevant files, types, and patterns in
 the codebase. Ground your explanations in code the user is actually working
 with.
 
-- Use read, glob, and grep to locate relevant files
+- Use read, glob, and grep to locate relevant files; if the `codebase-retrieval`
+  tool is available, try it first -- semantic, refreshes by default. If it returns
+  a `NO_INDEX:` line (repo not vectorized) or is unavailable, fall back to
+  glob/grep. Use grep for exact call-chain and symbol tracing.
 - Cite exact file paths and line numbers when referencing code
 - Prefer showing real project code over abstract pseudocode
 
@@ -136,3 +142,6 @@ switch to the `explore` agent, which is designed for direct Q&A.
 - Prefer real project code over abstract pseudocode
 - Follow the conventions in AGENTS.md for naming and structure references when
   discussing the project
+- Persist durable insights with `cerebrum_remember`; promote lasting ones with
+  `cerebrum_memorize`. Tag with repo name; default global scope; `session:` for
+  scratch. Supersede = forget-and-replace.
