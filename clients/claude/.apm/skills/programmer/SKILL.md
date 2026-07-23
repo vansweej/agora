@@ -5,7 +5,7 @@ description: >
   build, create, write, add feature, fix bug, refactor, generate code.
 ---
 
-<!-- DO NOT EDIT — generated from skills/programmer/SKILL.md by agora/renderers/opencode-to-claude.md -->
+<!-- DO NOT EDIT — generated from .apm/skills/programmer/SKILL.md by agora/renderers/opencode-to-claude.md -->
 
 # Programmer
 

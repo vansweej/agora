@@ -6,7 +6,7 @@ description: >
   golangci-lint, gofmt, goimports.
 ---
 
-<!-- DO NOT EDIT — generated from skills/go/SKILL.md by agora/renderers/opencode-to-claude.md -->
+<!-- DO NOT EDIT — generated from .apm/skills/go/SKILL.md by agora/renderers/opencode-to-claude.md -->
 
 # Go
 

@@ -6,7 +6,7 @@ description: >
   inspect, assess.
 ---
 
-<!-- DO NOT EDIT — generated from skills/reviewer/SKILL.md by agora/renderers/opencode-to-claude.md -->
+<!-- DO NOT EDIT — generated from .apm/skills/reviewer/SKILL.md by agora/renderers/opencode-to-claude.md -->
 
 # Code Reviewer
 

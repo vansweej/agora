@@ -8,7 +8,7 @@ description: >
   rustdoc, mkdocs, docusaurus, changelog, release notes, runbook, troubleshooting, FAQ.
 ---
 
-<!-- DO NOT EDIT — generated from skills/documenter/SKILL.md by agora/renderers/opencode-to-claude.md -->
+<!-- DO NOT EDIT — generated from .apm/skills/documenter/SKILL.md by agora/renderers/opencode-to-claude.md -->
 
 # Documenter
 

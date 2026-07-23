@@ -6,7 +6,7 @@ description: >
   hspec, quickcheck, stack.yaml, .cabal.
 ---
 
-<!-- DO NOT EDIT — generated from skills/haskell/SKILL.md by agora/renderers/opencode-to-claude.md -->
+<!-- DO NOT EDIT — generated from .apm/skills/haskell/SKILL.md by agora/renderers/opencode-to-claude.md -->
 
 # Haskell
 

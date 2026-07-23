@@ -6,7 +6,7 @@ description: >
   ctest, conan, vcpkg, clang-tidy, clang-format.
 ---
 
-<!-- DO NOT EDIT — generated from skills/cpp/SKILL.md by agora/renderers/opencode-to-claude.md -->
+<!-- DO NOT EDIT — generated from .apm/skills/cpp/SKILL.md by agora/renderers/opencode-to-claude.md -->
 
 # C++
 

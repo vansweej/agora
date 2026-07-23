@@ -6,7 +6,7 @@ description: >
   integration test, failing test, spec, assert.
 ---
 
-<!-- DO NOT EDIT — generated from skills/tester/SKILL.md by agora/renderers/opencode-to-claude.md -->
+<!-- DO NOT EDIT — generated from .apm/skills/tester/SKILL.md by agora/renderers/opencode-to-claude.md -->
 
 # Tester
 
