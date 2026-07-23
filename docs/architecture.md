@@ -111,7 +111,7 @@ Two things worth noting from this map:
 - **Instructions are asymmetric between the two targets — verified
   empirically, not assumed.** OpenCode has no native per-file instruction
   reader: `apm install` only stages the content, and a separate
-  `apm compile -t opencode` writes the actual `AGENTS.md` (install prints
+  `apm compile -g` writes the actual `AGENTS.md` (install prints
   a one-line hint to this effect). Claude Code is different: `apm install`
   deploys the instruction **directly** to `.claude/rules/claude.md`, and
   running `apm compile -t claude` afterward is a documented no-op for it
@@ -164,7 +164,7 @@ inferred from documentation alone:
   instruction body with frontmatter stripped by apm itself.
 - `apm compile -t claude` confirmed as a no-op for the instruction ("Claude
   Code reads `.claude/rules/` directly, no further action needed"), and
-  `apm compile -t opencode` confirmed as required (generates `AGENTS.md`
+  `apm compile -g` confirmed as required (generates `AGENTS.md`
   from the staged instruction).
 - **Gotcha found and worth remembering:** running these commands directly
   against agora's own live checkout (rather than a clean export) can trip

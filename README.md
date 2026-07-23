@@ -77,7 +77,7 @@ sequenceDiagram
   APM->>FS: agents → ~/.config/opencode/agents/
   APM->>FS: skills → ~/.config/opencode/skills/
   APM-->>C: hint: run `apm compile -g` for AGENTS.md
-  C->>APM: apm compile -g -t opencode
+  C->>APM: apm compile -g
   APM->>FS: write ~/.config/opencode/AGENTS.md
   C->>APM: apm install vansweej/agora/clients/claude -t claude -g
   APM->>FS: 23 skills → ~/.claude/skills/
@@ -88,7 +88,7 @@ sequenceDiagram
 ```bash
 # OpenCode — needs a compile step for AGENTS.md
 apm install vansweej/agora -t opencode -g --legacy-skill-paths
-apm compile -g -t opencode
+apm compile -g
 
 # Claude Code — instructions deploy directly, no compile needed
 apm install vansweej/agora/clients/claude -t claude -g
@@ -107,7 +107,7 @@ Claude by an unqualified install.
 >
 > **Compile asymmetry:** OpenCode has no native per-file instruction
 > reader, so `apm install` only stages the instruction content — a
-> separate `apm compile -t opencode` writes the actual `AGENTS.md`. Claude
+> separate `apm compile -g` writes the actual `AGENTS.md`. Claude
 > Code is different: `apm install` deploys the instruction directly to
 > `.claude/rules/claude.md`, and `apm compile -t claude` is a no-op for it
 > ("Claude Code reads `.claude/rules/` directly, no further action
