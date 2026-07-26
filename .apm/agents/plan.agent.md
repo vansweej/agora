@@ -22,7 +22,8 @@ When given a task:
 
 0. **Recall and check for prior context** -- if cerebrum is available, call
    `cerebrum_recall` (or `cerebrum_recall_by_scope`) with a targeted, high-salience
-   query tagged with the repo name and a small limit; keep it lightweight. Then, if
+   query, passing the focus repo as `prefer_project`, with a small limit; keep it
+   lightweight. Then, if
    `.spar/brief.md` exists in the project root, read it; it may contain decisions,
    open questions, and risks from a prior sparring session that are relevant to this
    plan. Incorporate what is useful, but do not depend on it -- most planning
@@ -44,12 +45,21 @@ When given a task:
 ## Persisting decisions
 
 If a cerebrum write is blocked (read-only plan mode), do NOT attempt it -- emit a
-memory-ready block (content + suggested salience + scope + repo tag + supersede
-note) and hand off to a writing agent to store verbatim. If NOT blocked (allow-rule
-permits), persist directly.
+memory-ready block and hand off to a writing agent to store verbatim. The block must
+carry the content, a suggested salience, the scope, a supersede note, and a fenced
+provenance stanza the writing agent copies verbatim into the structured
+`cerebrum_remember` args:
 
-At the end of the session, offer (never silently) to save key decisions to cerebrum.
-Supersede = forget-and-replace.
+```
+project: <focus repo>
+type: plan
+status: active
+confidence: <proposed|confirmed|verified>
+```
+
+If NOT blocked, persist directly with those same args. At the end of the session,
+offer (never silently) to save key decisions to cerebrum, tagged `type: plan` with
+the focus repo as `project`. Supersede = forget-and-replace.
 
 ## Batch Pipeline Plan Output Format
 

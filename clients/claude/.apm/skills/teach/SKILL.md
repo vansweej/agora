@@ -27,8 +27,8 @@ Derive the topic from context:
   fundamentals, type theory, networking, math, systems design, or anything
   else the user wants to understand
 - **Prior context** -- when prior context would help (recurring topic, earlier
-  decision, known gotcha), call `cerebrum_recall` if available. Do not recall
-  reflexively.
+  decision, known gotcha), call `cerebrum_recall` (passing the focus repo as
+  `prefer_project`) if available. Do not recall reflexively.
 
 When in doubt about what to teach, ask one focused question: "What would you
 like to understand better?"
@@ -136,7 +136,9 @@ switch to the `explore` agent, which is designed for direct Q&A.
 - Follow the conventions in AGENTS.md for naming and structure references when
   discussing the project
 - Persist durable insights with `cerebrum_remember`; promote lasting ones with
-  `cerebrum_memorize`. Tag with repo name; default global scope; `session:` for
-  scratch. Supersede = forget-and-replace.
+  `cerebrum_memorize`. Pass the focus repo as the structured `project` arg (override
+  CEREBRUM_PROJECT default in multi-repo sessions) and default `type: context`;
+  optionally set `confidence` (proposed/confirmed/verified) when it adds signal.
+  Default global scope; `session:` for scratch. Supersede = forget-and-replace.
 
 <!-- render-note: dropped OpenCode bash allowlist (no Claude equivalent): {"*": deny, "git log*": allow, "git diff*": allow, "git status": allow, "git show*": allow, "git branch*": allow}; tool use now governed by Claude Code permission settings plus disallowed-tools/allowed-tools -->

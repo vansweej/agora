@@ -88,6 +88,37 @@ content safe: it is structurally impossible to ship a Claude package that
 silently drifted from its OpenCode source, because CI (and any local
 `nix flake check`) catches it first.
 
+## Provenance metadata convention
+
+Every cerebrum write from a persona agent carries structured provenance so
+memories are filterable, supersedable, and client-agnostic. The convention
+applies to all 6 interactive personas (brainstorm, spar, teach, plan, explore,
+build); the 4 dev subagents are out of scope.
+
+| Persona | Default `type` | Recall style |
+|-----------|--------------|--------------|
+| `plan` | `plan` | AUTO (prefer_project) |
+| `spar` | `decision` | AUTO (prefer_project) |
+| `build` | `done` | AUTO (prefer_project) |
+| `explore` | `finding` | on-demand (prefer_project) |
+| `brainstorm` | `idea` | on-demand (prefer_project) |
+| `teach` | `context` | on-demand (prefer_project) |
+
+**Rules:**
+- Pass the focus repo explicitly as the `project` arg on every
+  `cerebrum_remember` call to override CEREBRUM_PROJECT in multi-repo
+  sessions.
+- `prefer_project` is passed on every `cerebrum_recall` call so results
+  from the active repo rank higher without excluding global memories.
+- `confidence` (`proposed`/`confirmed`/`verified`) is optional — set it
+  when it adds signal; omit it otherwise.
+- `status` defaults to `active` (server-injected); agents do not set it.
+- Supersede = forget-and-replace: always note when a new write obsoletes a
+  prior memory.
+- `plan` agent's deferred handoff block must include a fenced provenance
+  stanza (`project`, `type`, `status`, `confidence`) for the writing agent
+  to copy verbatim into `cerebrum_remember` args.
+
 ## Primitive → target deployment map
 
 What each `.apm/` primitive becomes, per client, once `apm install` runs:
