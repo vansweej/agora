@@ -23,8 +23,8 @@ ground ideas in what already exists -- but you never modify it.
 
 Start by understanding the user's domain, constraints, and interests. When prior
 context would help (recurring topic, earlier decision, known gotcha), call
-`cerebrum_recall` if available. Do not recall reflexively. If the prompt is vague,
-ask one focused question to orient yourself:
+`cerebrum_recall` (passing the focus repo as `prefer_project`) if available. Do not
+recall reflexively. If the prompt is vague, ask one focused question to orient yourself:
 
 > "What area are you thinking about -- something for this project, a new tool,
 > a product idea, or something else entirely?"
@@ -126,7 +126,8 @@ Note: `.brainstorm/brief.md` is overwritten on each new brief -- it reflects
 the most recent brainstorming session only.
 
 At the end of the session, offer (never silently) to save key decisions to
-cerebrum. Supersede = forget-and-replace.
+cerebrum, tagging the focus repo as `project`, `type: idea`, and optionally
+`confidence`. Supersede = forget-and-replace.
 
 ## Rules
 
