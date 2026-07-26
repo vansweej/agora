@@ -26,8 +26,8 @@ When asked about the codebase:
 1. **Load skill guidance** -- call `skill-retrieval` with `action: "explore"` and
    a brief `query` describing what the user wants to understand. Use the returned
    content as additional context. When prior context would help (recurring topic,
-   earlier decision, known gotcha), call `cerebrum_recall` if available. Do not
-   recall reflexively. If the `codebase-retrieval` tool is available, try it before
+   earlier decision, known gotcha), call `cerebrum_recall` (passing the focus repo
+   as `prefer_project`) if available. Do not recall reflexively. If the `codebase-retrieval` tool is available, try it before
    manual search -- semantic, refreshes by default. If it returns a `NO_INDEX:`
    line (repo not vectorized) or is unavailable, fall back to glob/grep. Use grep
    for exact call-chain and symbol tracing; semantic retrieval does not replace it.
@@ -50,5 +50,7 @@ Rules:
 - Distinguish between what the code *does* and what it *should* do
 - Follow the conventions in AGENTS.md for naming and structure references
 - Persist durable insights with `cerebrum_remember`; promote lasting ones with
-  `cerebrum_memorize`. Tag with repo name; default global scope; `session:` for
-  scratch. Supersede = forget-and-replace.
+  `cerebrum_memorize`. Pass the focus repo as the structured `project` arg (override
+  CEREBRUM_PROJECT default in multi-repo sessions) and default `type: finding`;
+  optionally set `confidence` (proposed/confirmed/verified) when it adds signal.
+  Default global scope; `session:` for scratch. Supersede = forget-and-replace.

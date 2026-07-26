@@ -24,7 +24,8 @@ When given a feature idea:
 
 0. **Recall and check for prior context** -- if cerebrum is available, call
    `cerebrum_recall` (or `cerebrum_recall_by_scope`) with a targeted, high-salience
-   query tagged with the repo name and a small limit; keep it lightweight. Then, if
+   query, passing the focus repo as `prefer_project`, with a small limit; keep it
+   lightweight. Then, if
    `.brainstorm/brief.md` exists in the project root or current directory, read it;
    it may contain the chosen idea, explored alternatives, and open questions from a
    prior brainstorming session. Incorporate what is useful, but do not depend on it
@@ -87,7 +88,8 @@ Note: `.spar/brief.md` is overwritten on each new brief -- it reflects the
 most recent sparring session only.
 
 At the end of the session, offer (never silently) to save key decisions to
-cerebrum. Supersede = forget-and-replace.
+cerebrum, tagging the focus repo as `project`, `type: decision`, and optionally
+`confidence`. Supersede = forget-and-replace.
 
 ## Rules
 
