@@ -41,13 +41,15 @@ async function resolveBun(): Promise<string> {
 
 export default tool({
   description:
-    "Run an ai-coding pipeline (scaffold-rust, scaffold-cpp, rust-plan-cycle). " +
-    "Use this when asked to scaffold a new project or execute a pre-written plan.",
+    "Run an ai-coding pipeline (scaffold-rust, scaffold-cpp, plan-cycle, rust-plan-cycle). " +
+    "Use this when asked to scaffold a new project or execute a pre-written plan " +
+    "(from a file with --plan, or from cerebrum with --plan-ref).",
   args: {
     name: tool.schema
       .enum([
         "scaffold-rust",
         "scaffold-cpp",
+        "plan-cycle",
         "rust-plan-cycle",
       ])
       .describe("Pipeline to run"),
@@ -58,18 +60,26 @@ export default tool({
       .string()
       .optional()
       .describe(
-        "Optional request text for rust-plan-cycle (e.g. 'Add error handling to the parser')",
+        "Optional request text for plan-cycle/rust-plan-cycle (e.g. 'Add error handling to the parser')",
       ),
     plan: tool.schema
       .string()
       .optional()
-      .describe("Path to a plan file for rust-plan-cycle (e.g. './plan.md'). Resolved to absolute path."),
+      .describe("Path to a plan file for plan-cycle/rust-plan-cycle (e.g. './plan.md'). Resolved to absolute path. Mutually exclusive with planRef."),
+    planRef: tool.schema
+      .string()
+      .optional()
+      .describe(
+        "Cerebrum plan id to resolve the plan body from (the bare id, e.g. from a coordinator's " +
+        "plan_ref -- do NOT include the 'plan:' scope prefix, ai-coding derives that itself). " +
+        "Mutually exclusive with plan.",
+      ),
     maxRetries: tool.schema
       .number()
       .int()
       .min(0)
       .optional()
-      .describe("Maximum number of retries for resumable failures (rust-plan-cycle only)."),
+      .describe("Maximum number of retries for resumable failures (plan-cycle/rust-plan-cycle only)."),
     profile: tool.schema
       .enum(["local", "copilot-default", "hybrid"])
       .optional()
@@ -84,11 +94,18 @@ export default tool({
       );
     }
 
-    // Guard: rust-plan-cycle requires either a plan file or input
-    if (args.name === "rust-plan-cycle" && !args.plan && !args.input) {
+    const isPlanCyclePipeline = args.name === "plan-cycle" || args.name === "rust-plan-cycle";
+
+    // Guard: plan and planRef are mutually exclusive
+    if (args.plan && args.planRef) {
+      return "Error: plan and planRef are mutually exclusive. Provide at most one.";
+    }
+
+    // Guard: plan-cycle/rust-plan-cycle requires a plan file, a plan ref, or input
+    if (isPlanCyclePipeline && !args.plan && !args.planRef && !args.input) {
       return (
-        "Error: rust-plan-cycle requires either a plan file (--plan) or input text (--input). " +
-        "Provide at least one."
+        "Error: plan-cycle requires a plan file (plan), a cerebrum plan id (planRef), " +
+        'or input text (input). Provide at least one.'
       );
     }
 
@@ -100,6 +117,11 @@ export default tool({
     if (args.plan) {
       const absolutePlan = resolve(args.plan);
       argv.push("--plan", absolutePlan);
+    }
+
+    // Add plan-ref flag if provided (a cerebrum id, not a file path -- never resolved)
+    if (args.planRef) {
+      argv.push("--plan-ref", args.planRef);
     }
 
     // Add input flag if provided
