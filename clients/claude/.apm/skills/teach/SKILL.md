@@ -141,4 +141,4 @@ switch to the `explore` agent, which is designed for direct Q&A.
   optionally set `confidence` (proposed/confirmed/verified) when it adds signal.
   Default global scope; `session:` for scratch. Supersede = forget-and-replace.
 
-<!-- render-note: dropped OpenCode bash allowlist (no Claude equivalent): {"*": deny, "git log*": allow, "git diff*": allow, "git status": allow, "git show*": allow, "git branch*": allow}; tool use now governed by Claude Code permission settings plus disallowed-tools/allowed-tools -->
+<!-- render-note: dropped OpenCode bash allowlist (no Claude equivalent): {"*": deny, "git log*": allow, "git diff*": allow, "git status": allow, "git show*": allow, "git branch*": allow}; tool use now governed by Claude Code permission settings plus disallowed-tools/allowed-tools (skill outputs) or the tools: allowlist (agent-file outputs) -->

@@ -11,4 +11,5 @@ Report each step's outcome. If the pipeline failed, explain which step failed an
 Available pipelines:
 - scaffold-rust   <workspace>             Rust: cargo init + generate flake.nix
 - scaffold-cpp    <workspace>             C++: generate CMakeLists.txt + src/main.cpp + flake.nix
-- rust-plan-cycle <workspace> [--plan <file>] [--input "..."] [--max-retries <int>] [--profile <name>]  Rust: execute a pre-written plan (plan → implement → fmt → clippy → test → coverage)
+- plan-cycle      <workspace> [--plan <file> | --plan-ref <id>] [--input "..."] [--max-retries <int>] [--profile <name>]  Multi-language: execute a pre-written plan (from a file, or resolved from cerebrum by id) → implement → verify → commit per phase
+- rust-plan-cycle <workspace> [--plan <file> | --plan-ref <id>] [--input "..."] [--max-retries <int>] [--profile <name>]  Alias of plan-cycle that forces the Rust toolchain

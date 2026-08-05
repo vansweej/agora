@@ -54,11 +54,22 @@ existing LLM-based renderer (`renderers/opencode-to-claude.md` +
 
 - Model identifiers are mapped to Claude's short names (`opus`, `sonnet`).
 - OpenCode `permission:` blocks are mapped to Claude's
-  `disallowed-tools` / `permissionMode` frontmatter.
-- Each persona agent is re-authored as a Claude **skill** (with
-  `disable-model-invocation: true`, since it should only be invoked by name,
-  never auto-triggered) — Claude has no bare "agent" primitive in the shape
-  agora's personas need for this.
+  `disallowed-tools` / `allowed-tools` (skill outputs) or `tools:`
+  allowlist (agent-file outputs) frontmatter.
+- The renderer routes each source to one of two output shapes, not one:
+  the 3 manual persona agents (`brainstorm`, `teach`, `build`) and the
+  `coordinator` are re-authored as Claude **skills** (with
+  `disable-model-invocation: true`, since they should only be invoked by
+  name, never auto-triggered; `coordinator` renders under the name
+  `workflow-explore`) — Claude has no bare "agent" primitive in the shape
+  these need, since they are user-facing entry points, not Task-tool
+  targets. The 3 specialist subagents (`explore`, `spar`, `plan`) are
+  re-authored as real **Claude agent files** (`.claude/agents/<n>.md`)
+  instead — they are OpenCode `mode: subagent`, invoked exclusively via the
+  `task` tool by `coordinator`, and Claude's own Task tool addresses
+  subagents by name the same way, so an agent-file deploy is the correct
+  shape for them (verified empirically, see "Verification performed"
+  below) rather than another skill-shaped workaround.
 
 The render is not run inside `apm install` or `nix build`: it needs model
 access and is non-deterministic, so **the output is committed** — the same
@@ -70,37 +81,43 @@ itself, and the reason for it, are unchanged.
 flowchart TB
   SRC[".apm/agents/*.agent.md<br/>.apm/skills/*/SKILL.md"]
   SRC -->|"copied verbatim"| OPKG["aios-agents-opencode<br/>target: opencode"]
-  SRC -->|"render.sh (LLM, run locally)"| GEN["clients/claude/.apm/skills/<br/>(committed)"]
+  SRC -->|"render.sh: personas + coordinator (LLM, run locally)"| GENSK["clients/claude/.apm/skills/<br/>(committed)"]
+  SRC -->|"render.sh: specialist subagents (LLM, run locally)"| GENAG["clients/claude/.apm/agents/<br/>(committed)"]
   NAT["native skills + CLAUDE.md instruction"] --> CPKG
-  GEN --> CPKG["aios-agents-claude<br/>target: claude"]
+  GENSK --> CPKG["aios-agents-claude<br/>target: claude"]
+  GENAG --> CPKG
   SRC -. "sha256" .-> MAN["manifest.json"]
-  GEN -. "sha256" .-> MAN
+  GENSK -. "sha256" .-> MAN
+  GENAG -. "sha256" .-> MAN
   MAN --> CHK["checks.claude-render-fresh<br/>(nix flake check)"]
 ```
 
 **The drift guard.** `checks.claude-render-fresh` is a pure (no LLM, no
 network) `nix flake check`: it recomputes the sha256 of every source file
-(the 15 shared skills, the 6 persona agents, and the renderer prompt
-itself) and compares against `clients/claude/.apm/manifest.json`. If any
-source changed since the last `render.sh` run, the check fails with
-`STALE: ...`. This is the safety net that makes committing generated
-content safe: it is structurally impossible to ship a Claude package that
-silently drifted from its OpenCode source, because CI (and any local
-`nix flake check`) catches it first.
+(the 15 shared skills, the 3 manual persona agents `brainstorm teach build`,
+the 3 specialist subagents `explore spar plan`, the `coordinator`, and the
+renderer prompt itself) and compares against
+`clients/claude/.apm/manifest.json`. If any source changed since the last
+`render.sh` run, the check fails with `STALE: ...`. This is the safety net
+that makes committing generated content safe: it is structurally impossible
+to ship a Claude package that silently drifted from its OpenCode source,
+because CI (and any local `nix flake check`) catches it first.
 
 ## Provenance metadata convention
 
-Every cerebrum write from a persona agent carries structured provenance so
-memories are filterable, supersedable, and client-agnostic. The convention
-applies to all 6 interactive personas (brainstorm, spar, teach, plan, explore,
-build); the 4 dev subagents are out of scope.
+Every cerebrum write from an agora agent carries structured provenance so
+memories are filterable, supersedable, and client-agnostic. Only agents that
+actually persist to cerebrum are in scope: the `coordinator` and the 3 manual
+personas (`brainstorm`, `teach`, `build`). The 3 specialist subagents
+(`explore`, `spar`, `plan`) are pure-return — they never call
+`cerebrum_remember`/`cerebrum_memorize` themselves; persistence is the
+calling agent's (`coordinator`'s) responsibility. The 4 dev subagents remain
+out of scope.
 
-| Persona | Default `type` | Recall style |
+| Agent | Default `type` | Recall style |
 |-----------|--------------|--------------|
-| `plan` | `plan` | AUTO (prefer_project) |
-| `spar` | `decision` | AUTO (prefer_project) |
+| `coordinator` | `plan` | AUTO (prefer_project) |
 | `build` | `done` | AUTO (prefer_project) |
-| `explore` | `finding` | on-demand (prefer_project) |
 | `brainstorm` | `idea` | on-demand (prefer_project) |
 | `teach` | `context` | on-demand (prefer_project) |
 
@@ -115,9 +132,11 @@ build); the 4 dev subagents are out of scope.
 - `status` defaults to `active` (server-injected); agents do not set it.
 - Supersede = forget-and-replace: always note when a new write obsoletes a
   prior memory.
-- `plan` agent's deferred handoff block must include a fenced provenance
-  stanza (`project`, `type`, `status`, `confidence`) for the writing agent
-  to copy verbatim into `cerebrum_remember` args.
+- `coordinator` stores the approved plan under scope `plan:<uuid>`
+  (`type: plan`), promotes it with `cerebrum_memorize`, and upserts a
+  per-repo plan-index entry — see its agent file for the full contract. It
+  is the only agent that writes a `plan:` scope; `explore`/`spar`/`plan`
+  never touch cerebrum writes at all.
 
 ## Primitive → target deployment map
 
@@ -134,11 +153,18 @@ flowchart LR
 
 Two things worth noting from this map:
 
-- **Agents only reach OpenCode in this repo**, despite apm supporting a
-  verbatim `.claude/agents/` deploy — agora's `clients/claude/apm.yml` pins
-  `targets: [claude]` and never installs the *agents* primitive there at
-  all; Claude gets the persona content exclusively through the rendered
-  **skills** path described above.
+- **Agents reach both targets.** apm supports a verbatim `.claude/agents/`
+  deploy, and agora now uses it: `coordinator`, `brainstorm`, `teach`, and
+  `build` stay OpenCode-only primary agents (`coordinator` renders to Claude
+  as the skill `workflow-explore` instead — see below), but the 3 specialist
+  subagents `explore`, `spar`, `plan` render to real `.claude/agents/<n>.md`
+  files, verified empirically via a clean-export `apm install --target
+  claude` (see "Verification performed" below). This used to be false —
+  agora previously shipped persona content to Claude exclusively through the
+  rendered skills path — but the coordinator architecture (explore/spar/plan
+  as pure-return subagents addressed via Claude's own Task tool, same as
+  OpenCode's) made agent-file parity the natural fit instead of another
+  skill-shaped workaround.
 - **Instructions are asymmetric between the two targets — verified
   empirically, not assumed.** OpenCode has no native per-file instruction
   reader: `apm install` only stages the content, and a separate
@@ -181,25 +207,29 @@ tracked separately from agora's own migration.
 The claims above were verified against a real `apm` CLI (v0.26.0), not
 inferred from documentation alone:
 
-- `apm compile --validate` inside this repo: 10 chatmodes + 2 instructions
+- `apm compile --validate` inside this repo: 11 chatmodes + 2 instructions
   validated with zero errors — confirms agora's OpenCode-native
-  `permission:` blocks and lack of `tools:`/`color:` fields never trigger
-  apm's opencode-shape warnings.
+  `permission:` blocks (including the coordinator's `task:` allowlist and
+  the specialist subagents' `mode: subagent`) never trigger apm's
+  opencode-shape warnings.
 - `apm install --target opencode` against a **clean git-archive export**
-  (not the live working tree): zero warnings, zero security findings, 10
+  (not the live working tree): zero warnings, zero security findings, 11
   agents + 16 skills deployed. Skills landed at `.agents/skills/` by
   default; `--legacy-skill-paths` correctly restored `.opencode/skills/`.
 - `apm install --target claude` against the `clients/claude` subpath, same
-  clean export: zero warnings, 23 skills + 1 rule deployed, `settings.json`
+  clean export: zero warnings, **3 agents deployed to `.claude/agents/`**
+  (`explore.md`, `plan.md`, `spar.md` — spot-checked byte-for-byte against
+  `render.sh`'s output), 21 skills + 1 rule deployed, `settings.json`
   **not in the write plan** (apm never touches it — confirmed), `.claude/rules/claude.md`
   exactly matches the source instruction body with frontmatter stripped by apm
   itself. `clients/claude/settings.json` is present in the repo but is
   **served outside apm**: home-manager deploys it directly to
   `~/.claude/settings.json` for Jan; apm colleagues can copy its four
   `permissions.allow` entries manually for prompt-free cerebrum writes, or
-  leave it as-is — Claude prompts per call and the `plan` persona's deferred
-  clause handles any denial gracefully. See `docs/claude-setup.md` for
-  details.
+  leave it as-is — Claude prompts per call and any denied write simply
+  doesn't persist (there is no longer a deferred-handoff fallback path;
+  only `coordinator`/`brainstorm`/`teach`/`build` attempt cerebrum writes at
+  all). See `docs/claude-setup.md` for details.
 - `apm compile -t claude` confirmed as a no-op for the instruction ("Claude
   Code reads `.claude/rules/` directly, no further action needed"), and
   `apm compile -g` confirmed as required (generates `AGENTS.md`
