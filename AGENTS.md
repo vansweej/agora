@@ -14,7 +14,10 @@ and commit the result, or `nix flake check` fails with `STALE: ...`.
 
 Render sources (the only things that trigger a re-render):
 - the **15 shared skills** in `.apm/skills/*` — every dir **except** `context-audit`
-- the **6 persona agents**: `brainstorm spar teach plan explore build`
+- the **3 manual persona agents** (render to Claude skills): `brainstorm teach build`
+- the **3 specialist subagents** (render to Claude agent files): `explore spar plan`
+- the **coordinator** (renders to the Claude skill `workflow-explore`):
+  `.apm/agents/coordinator.agent.md`
 - the renderer prompt `renderers/opencode-to-claude.md`
 
 Re-render (needs model access; non-deterministic; run locally, never in CI):
@@ -62,8 +65,13 @@ renderers/render.sh (see "Golden rule" above).
   `clients/claude/apm.yml` → package `aios-agents-claude` (`targets: [claude]`).
   `targets:` is always pinned on purpose; an unqualified `apm install` can never
   cross-deploy to the wrong client.
-- `.apm/agents/` holds 10 OpenCode agents (6 personas + 4 dev subagents); Claude
-  gets persona content **only** as rendered skills, never as agents.
+- `.apm/agents/` holds 11 OpenCode agents: 4 primary agents (`coordinator`,
+  `brainstorm`, `teach`, `build`), 3 specialist subagents (`explore spar plan`,
+  `mode: subagent`, invoked only via `coordinator`'s `task` tool), and 4 dev
+  subagents (`debugger reviewer tester planner`). `explore`, `spar`, and `plan`
+  also render to Claude as real `.claude/agents/` files (so Claude's own Task
+  tool can address them the same way) — this is new: agora used to ship
+  personas to Claude only as skills, never as agents.
 - `.opencode/agent/renderer.md` is the tools-disabled agent `render.sh` drives — not
   a product agent.
 - `commands/`, `tools/`, `bin/` are **home-manager-only** and are NOT part of either
