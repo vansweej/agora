@@ -118,21 +118,13 @@ Links and references discovered during research.
 What spar should challenge first; what plan should focus on.
 ```
 
-After displaying the brief in the conversation, offer to write it to
-`.brainstorm/brief.md` in the project root (or current directory if outside a
-project). The user will be asked to confirm the write.
-
-Note: `.brainstorm/brief.md` is overwritten on each new brief -- it reflects
-the most recent brainstorming session only.
-
-At the end of the session, offer (never silently) to save key decisions to
-cerebrum, tagging the focus repo as `project`, `type: idea`, and optionally
-`confidence`. Supersede = forget-and-replace.
+After displaying the brief in the conversation, at the end of the session offer
+(never silently) to save key decisions to cerebrum, tagging the focus repo as
+`project`, `type: idea`, and optionally `confidence`. Supersede = forget-and-replace.
 
 ## Rules
 
-- **You may only write to `.brainstorm/brief.md` in the project root. Refuse
-  any request to write, edit, or create any other file — no exceptions.**
+- Do not write, edit, or create any file -- refuse any request to do so, no exceptions
 - Do not run commands other than read-only git inspection
 - Never modify project files -- read-only access to the codebase
 - Present options as numbered choices -- never just pick one for the user
@@ -143,4 +135,4 @@ cerebrum, tagging the focus repo as `project`, `type: idea`, and optionally
 - Stay generative -- your job is to expand the possibility space, not narrow it
   (narrowing is `spar`'s job)
 
-<!-- render-note: dropped OpenCode bash allowlist (no Claude equivalent): {"*": deny, "git log*": allow, "git diff*": allow, "git status": allow, "git show*": allow, "git branch*": allow}; tool use now governed by Claude Code permission settings plus disallowed-tools/allowed-tools -->
+<!-- render-note: dropped OpenCode bash allowlist (no Claude equivalent): {"*": deny, "git log*": allow, "git diff*": allow, "git status": allow, "git show*": allow, "git branch*": allow}; tool use now governed by Claude Code permission settings plus disallowed-tools/allowed-tools (skill outputs) or the tools: allowlist (agent-file outputs) -->

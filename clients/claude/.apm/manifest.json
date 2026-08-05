@@ -1,5 +1,5 @@
 {
-  "renderers/opencode-to-claude.md": "b596f2fc3a4a4100b474b7ae43d06d1b0a3d4caab59231a835fd0fbbea0f795d",
+  "renderers/opencode-to-claude.md": "913f8e71024adaba7a3d798bf1ee302730d35d15ee0c03cbbdccc92e9acf38ed",
   ".apm/skills/analyst/SKILL.md": "10757a8b4e5696a800e28d12835f41247a95f4f8ea3d788862548a89762a4773",
   ".apm/skills/architect/SKILL.md": "1e63e9c472344fb392e73928c701b53ddee40e75129f48e36049d9653f9c35e0",
   ".apm/skills/cpp/SKILL.md": "aad7df5bde77bdda684e9ae92e903395c9c3b576765a7ba6fb413530f2411097",
@@ -15,10 +15,11 @@
   ".apm/skills/rust/SKILL.md": "3087477675a59be178f9f2fc62acb29b481e4bd508bf18a3f5e1838728369991",
   ".apm/skills/tester/SKILL.md": "1baa1df68d11242aec1e2072360cb01111cabeb7368a531e699fc85cbc0c5588",
   ".apm/skills/typescript/SKILL.md": "50804d4e2ef1bbcf9f8ce683288fb5f7649361e7c2fb2a685d660549b84f142c",
-  ".apm/agents/brainstorm.agent.md": "782d5cb8635f5142d8ddbeb750ed8af2d45225c35521fa1cd402f0c38baccfde",
-  ".apm/agents/spar.agent.md": "6d28cee393268ef1f9f5913da37bf94c15e639d8318160221e8d5cd070f16865",
+  ".apm/agents/brainstorm.agent.md": "dcdf6f36e706b698392b6a5bcf372fb1ed3831f92faea70f67e970722447c592",
   ".apm/agents/teach.agent.md": "da5e8c44e775e384c6e23395b18e7f78ab7c0ee388a1a54a8d7b2664bdcbcdaf",
-  ".apm/agents/plan.agent.md": "cf622a259e60866abe7041507d3ee4858c6dbd970468dedd4cdec611839ee753",
-  ".apm/agents/explore.agent.md": "31c305bdfaad779a1e30a2d2bc44f0496c8db96625f37bb65ffe1b025ea003d0",
-  ".apm/agents/build.agent.md": "20dcea39314ba62866ceae411532089ea154dc202081836cb2a6dcfb1f336982"
+  ".apm/agents/build.agent.md": "20dcea39314ba62866ceae411532089ea154dc202081836cb2a6dcfb1f336982",
+  ".apm/agents/explore.agent.md": "338ecdab2b0248e9d486b849ed96da8a0667660f12e91fb9f134717be3ea5add",
+  ".apm/agents/spar.agent.md": "f5ef75766748e98941696ab6cc3ecfc249f9f6dcad2650ab549a5646e88ab569",
+  ".apm/agents/plan.agent.md": "f01431678f26addfe751c9e67896af38754b64f69ce5378a3d99393ebef449c2",
+  ".apm/agents/coordinator.agent.md": "9954415bfb70300d07ba5ed536e20c304aee20f9837c9cb80090310da59dc175"
 }

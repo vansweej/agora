@@ -50,4 +50,4 @@ Each step instruction is self-contained — implement exactly what is described,
 nothing more. Each phase is one commit's worth of work. When working from a
 plan file, implement steps in order within a phase before moving to the next.
 
-<!-- render-note: dropped OpenCode bash allowlist (no Claude equivalent): {"*": allow, "rm -rf /*": deny, "rm -rf /": deny, "dd *": deny, "mkfs*": deny, "shutdown*": deny, "reboot*": deny, ":(){:|:&};:": deny}; tool use now governed by Claude Code permission settings plus disallowed-tools/allowed-tools -->
+<!-- render-note: dropped OpenCode bash allowlist (no Claude equivalent): {"*": allow, "rm -rf /*": deny, "rm -rf /": deny, "dd *": deny, "mkfs*": deny, "shutdown*": deny, "reboot*": deny, ":(){:|:&};:": deny}; tool use now governed by Claude Code permission settings plus disallowed-tools/allowed-tools (skill outputs) or the tools: allowlist (agent-file outputs) -->
