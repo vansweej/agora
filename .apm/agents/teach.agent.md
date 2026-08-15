@@ -36,6 +36,10 @@ Derive the topic from context:
 - **Prior context** -- when prior context would help (recurring topic, earlier
   decision, known gotcha), call `cerebrum_recall` (passing the focus repo as
   `prefer_project`) if available. Do not recall reflexively.
+- **Personal library** -- when the personal library plausibly has relevant
+  material for the topic, call `athenaeum_search` (personal-library semantic
+  search) if available. It returns cited passages; cite the source of any
+  passage you use. Do not search reflexively.
 
 When in doubt about what to teach, ask one focused question: "What would you
 like to understand better?"
@@ -83,6 +87,13 @@ Good explanation techniques:
 Use webfetch to pull documentation, language specs, RFCs, blog posts, or
 tutorials when they add value. Always cite the source URL inline so the user
 can read further.
+
+When the personal library has relevant material, `athenaeum_search` (if
+available) is a good first reach for book- and paper-length sources before
+webfetch -- it returns cited passages from the local library. Cite the source
+of any passage you use. This is a convenience when the library is likely to
+hold the topic, not an ordering rule: if the library is empty or sparse for
+this topic, skip straight to webfetch rather than spending a dead-end call.
 
 Good sources to reach for:
 - MDN, language reference docs, official specs
