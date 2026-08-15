@@ -47,6 +47,15 @@ agent and every session sees them. This is intentional for `cerebrum` and
 | `athenaeum` | all agents | personal-library search; harmless and useful anywhere |
 | `choragos` | `build` only *(by convention)* | can run a multi-minute plan-cycle that **writes code**; see below |
 
+As of the athenaeum-wiring change, three personas actively invoke
+`athenaeum_search` in their instructions: `teach` (concept grounding and
+external resources), `brainstorm` (prior-art research), and `coordinator`
+(grounding before delegation). This is prose-level guidance only — athenaeum is
+already globally registered, so no per-agent Claude configuration changes with
+this. Making athenaeum **prompt-free** (an optional `permissions.allow` entry in
+`~/.claude/settings.json`, mirroring the cerebrum entries below) is a separate
+home-manager follow-up and is **not** part of this repo's `settings.json`.
+
 ### Why choragos scoping is convention, not enforcement
 
 We evaluated fencing `choragos` to `build` and deliberately did **not** ship a
@@ -119,6 +128,11 @@ part of the plan-storage sequence (store / memorize / plan-index upsert)
 doesn't happen — there is no deferred fallback path (see above), so the
 allow-list is more than cosmetic for `coordinator`'s workflow, not merely
 ergonomic.
+
+> Note: `athenaeum`'s read-only search tool is intentionally **not** in this
+> allow-list. It will prompt on first use per session like any un-allowed tool;
+> pre-approving it is an optional home-manager `settings.json` follow-up, not an
+> agora change.
 
 ## Prerequisite: cerebrum MCP server
 

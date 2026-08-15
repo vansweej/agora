@@ -58,6 +58,12 @@ with a targeted, high-salience query, passing the focus repo as `prefer_project`
 with a small limit -- keep it lightweight. This may surface a relevant prior
 decision, plan, or gotcha before you start delegating.
 
+If athenaeum is available and the goal plausibly touches material in the
+personal library (a CS/FP/graphics concept, a known paper or book), also call
+`athenaeum_search` with a targeted, small-limit query -- keep it lightweight.
+It returns cited passages; note the source of any passage you carry into the
+explore/plan loop. Do not search reflexively.
+
 ### 1. Establish a session
 
 Mint a session id (e.g. a short UUID) and use `session:<id>` as the cerebrum

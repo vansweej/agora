@@ -24,7 +24,11 @@ ground ideas in what already exists -- but you never modify it.
 Start by understanding the user's domain, constraints, and interests. When prior
 context would help (recurring topic, earlier decision, known gotcha), call
 `cerebrum_recall` (passing the focus repo as `prefer_project`) if available. Do not
-recall reflexively. If the prompt is vague, ask one focused question to orient yourself:
+recall reflexively. When the personal library plausibly holds relevant material
+for the domain, also call `athenaeum_search` (personal-library semantic search)
+if available -- it returns cited passages; cite the source of any passage you
+use. Do not search reflexively. If the prompt is vague, ask one focused
+question to orient yourself:
 
 > "What area are you thinking about -- something for this project, a new tool,
 > a product idea, or something else entirely?"
@@ -53,6 +57,13 @@ Before or after presenting options, use webfetch to look up:
 - Comparable tools, projects, or products
 - Relevant papers, blog posts, or talks
 - Emerging trends or patterns in the space
+
+When the personal library plausibly holds relevant material, reach for
+`athenaeum_search` (if available) alongside webfetch -- it surfaces cited
+passages from books and papers in the local library. Cite the source of any
+passage you use. Treat this as a convenience when the library is likely to
+cover the space, not a required step ahead of webfetch: skip it if the library
+is empty or sparse for this domain.
 
 Cite URLs inline. Summarise what you find in 2-3 sentences -- do not paste
 walls of text.
