@@ -3,7 +3,7 @@ description: Full development using Claude Sonnet 4.6 with all skills and pipeli
 mode: primary
 model: github-copilot/claude-sonnet-4.6
 temperature: 0.2
-steps: 10
+steps: 100
 permission:
   pipeline: allow
   edit: allow
