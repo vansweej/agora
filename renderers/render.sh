@@ -45,7 +45,7 @@ fi
 
 SHARED_SKILLS=(
   analyst architect cpp debugger documenter explorer go haskell julia
-  programmer python reviewer rust tester typescript
+  programmer python rails reviewer ruby rust tester typescript
 )
 PERSONA_SKILLS=(brainstorm teach build)
 SPECIALIST_SUBAGENTS=(explore spar plan)
