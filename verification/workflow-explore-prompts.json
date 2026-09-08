@@ -1,0 +1,38 @@
+{
+  "passBar": {
+    "minimumDelegationRate": 0.8,
+    "maximumFalseTriggerRate": 0.1
+  },
+  "prompts": [
+    {
+      "id": "feature-plan",
+      "kind": "non-trivial",
+      "prompt": "Plan a cache for this project's API client, including invalidation and rollout risks."
+    },
+    {
+      "id": "bug-investigation",
+      "kind": "non-trivial",
+      "prompt": "Investigate why this project's login flow fails intermittently and prepare a fix plan."
+    },
+    {
+      "id": "test-coverage",
+      "kind": "non-trivial",
+      "prompt": "Investigate how to add more unit tests to this repository."
+    },
+    {
+      "id": "factual-question",
+      "kind": "trivial",
+      "prompt": "What language is this project written in?"
+    },
+    {
+      "id": "quick-lookup",
+      "kind": "trivial",
+      "prompt": "Where is the project version declared?"
+    },
+    {
+      "id": "casual-chat",
+      "kind": "trivial",
+      "prompt": "Hello — how are you today?"
+    }
+  ]
+}
