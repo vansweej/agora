@@ -89,19 +89,14 @@ behavioral convention, not an enforced sandbox.
 
 ## Allow-list: skip the prompts (optional)
 
-`clients/claude/settings.local.json` carries Jan's five `permissions.allow`
-entries that pre-approve the cerebrum read/write tools and
-`cerebrum_forget`:
+`clients/claude/settings.local.json` carries Jan's verified
+`permissions.allow` rule for the live `cerebrum-mcp` server:
 
 ```json
-"mcp__cerebrum__cerebrum_recall",
-"mcp__cerebrum__cerebrum_recall_by_scope",
-"mcp__cerebrum__cerebrum_remember",
-"mcp__cerebrum__cerebrum_memorize",
-"mcp__cerebrum__cerebrum_forget"
+"mcp__cerebrum-mcp__*"
 ```
 
-`cerebrum_forget` is pre-authorized because the coordinator needs it to
+This rule pre-authorizes `cerebrum_forget`, which the coordinator needs to
 replace a plan-index entry and sweep its session checkpoints. A completing
 `/workflow-explore` run also invokes the `explore`, `plan`, and `spar` Task
 agents and the `workflow-explore` skill. Capture the exact Task and Skill
@@ -120,18 +115,15 @@ is needed after `home-manager switch`.
 
 apm's `apm install --target claude` never deploys `settings.json` or
 `settings.local.json` (verified: neither appears in apm's write plan). To get
-prompt-free cerebrum writes, copy these five entries into your own Claude Code
-settings file:
+prompt-free cerebrum access, copy the rule matching your live MCP server name
+into your own Claude Code settings file. Jan's `cerebrum-mcp` configuration
+uses:
 
 ```json
 {
   "permissions": {
     "allow": [
-      "mcp__cerebrum__cerebrum_recall",
-      "mcp__cerebrum__cerebrum_recall_by_scope",
-      "mcp__cerebrum__cerebrum_remember",
-      "mcp__cerebrum__cerebrum_memorize",
-      "mcp__cerebrum__cerebrum_forget"
+      "mcp__cerebrum-mcp__*"
     ]
   }
 }

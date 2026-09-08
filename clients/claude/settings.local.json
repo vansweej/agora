@@ -1,12 +1,8 @@
 {
-  "_comment": "Canonical source for Jan's ~/.claude/settings.local.json. Home Manager deploys this local override without modifying corporate-managed ~/.claude/settings.json. It pre-authorizes cerebrum reads and writes, including cerebrum_forget for the coordinator's plan-index replacement and session sweep. Capture Task and Skill permission rule strings verbatim from a live /workflow-explore prompt before adding them here; do not guess their spelling.",
+  "_comment": "Canonical source for Jan's ~/.claude/settings.local.json. Home Manager deploys this local override without modifying corporate-managed ~/.claude/settings.json. The verified live MCP server name is cerebrum-mcp, so its wildcard pre-authorizes the coordinator's complete cerebrum lifecycle, including plan-index replacement and session sweep. Capture Task and Skill permission rule strings verbatim from a live /workflow-explore prompt before adding them here; do not guess their spelling.",
   "permissions": {
     "allow": [
-      "mcp__cerebrum__cerebrum_recall",
-      "mcp__cerebrum__cerebrum_recall_by_scope",
-      "mcp__cerebrum__cerebrum_remember",
-      "mcp__cerebrum__cerebrum_memorize",
-      "mcp__cerebrum__cerebrum_forget"
+      "mcp__cerebrum-mcp__*"
     ]
   }
 }
