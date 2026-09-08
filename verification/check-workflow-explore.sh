@@ -57,7 +57,7 @@ while IFS= read -r test_case; do
   # hands-off workflow and must count against delegation.
   (
     cd "$TARGET_REPO"
-    claude --print --output-format stream-json --forward-subagent-text \
+    claude --print --verbose --output-format stream-json --forward-subagent-text \
       --permission-mode auto --permission-prompts none "$prompt"
   ) > "$events" || true
 
