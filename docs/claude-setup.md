@@ -56,9 +56,8 @@ As of the athenaeum-wiring change, three personas actively invoke
 external resources), `brainstorm` (prior-art research), and `coordinator`
 (grounding before delegation). This is prose-level guidance only — athenaeum is
 already globally registered, so no per-agent Claude configuration changes with
-this. Making athenaeum **prompt-free** (an optional `permissions.allow` entry in
-`~/.claude/settings.json`, mirroring the cerebrum entries below) is a separate
-home-manager follow-up and is **not** part of this repo's `settings.json`.
+this. Whether any of these MCP tools run without prompting is controlled by
+enterprise-managed Claude settings; see the policy section below.
 
 ### Why choragos scoping is convention, not enforcement
 
@@ -87,63 +86,52 @@ In practice `choragos` is already build-only by prompt convention: only the
 never mention it and will not invoke it in normal use. This is a
 behavioral convention, not an enforced sandbox.
 
-## Allow-list: skip the prompts (optional)
+## Enterprise-managed MCP permission policy
 
-`clients/claude/settings.local.json` carries Jan's verified
-`permissions.allow` rule for the live `cerebrum-mcp` server:
+`/status` on Jan's machine reports **Enterprise managed settings (plist)**.
+Managed settings take precedence over user settings, and the enterprise policy
+currently requires approval even though the user settings contain an allow rule.
+Agora and Home Manager deliberately do not deploy `settings.json` or an
+unsupported `~/.claude/settings.local.json`; neither can override that policy.
 
-```json
-"mcp__cerebrum-mcp__*"
-```
-
-This rule pre-authorizes `cerebrum_forget`, which the coordinator needs to
-replace a plan-index entry and sweep its session checkpoints. A completing
-`/workflow-explore` run also invokes the `explore`, `plan`, and `spar` Task
-agents and the `workflow-explore` skill. Capture the exact Task and Skill
-permission strings from the live Claude prompts before adding them to the
-allow-list; their spelling is not documented here and must not be guessed.
-
-### Jan (home-manager)
-
-Jan's home-manager configuration deploys
-`clients/claude/settings.local.json` to `~/.claude/settings.local.json`.
-The local override is merged by Claude Code and leaves the corporate-managed
-Bedrock configuration in `~/.claude/settings.json` untouched. No manual step
-is needed after `home-manager switch`.
-
-### apm colleagues
-
-apm's `apm install --target claude` never deploys `settings.json` or
-`settings.local.json` (verified: neither appears in apm's write plan). To get
-prompt-free cerebrum access, copy the rule matching your live MCP server name
-into your own Claude Code settings file. Jan's `cerebrum-mcp` configuration
-uses:
+For prompt-free access, the enterprise Claude Code administrator must add
+allow rules to the managed policy. The current Home Manager registrations use
+these server names:
 
 ```json
 {
   "permissions": {
     "allow": [
-      "mcp__cerebrum-mcp__*"
+      "mcp__cerebrum-mcp__*",
+      "mcp__athenaeum-mcp__*",
+      "mcp__choragos-mcp__*"
     ]
   }
 }
 ```
 
-Without this, Claude will prompt per cerebrum call. For most operations that
-is fine. For `coordinator` specifically, a denied write simply means that
-part of the plan-storage sequence (store / memorize / plan-index upsert)
-doesn't happen — there is no deferred fallback path (see above), so the
-allow-list is more than cosmetic for `coordinator`'s workflow, not merely
-ergonomic.
+`cerebrum-mcp` includes destructive `cerebrum_forget`, which the coordinator
+uses for plan-index replacement and session sweeping. `choragos-mcp` can run a
+code-writing plan cycle, so its inclusion is a deliberate administrator
+decision rather than a requirement for the workflow-explore completion path.
 
-After a live `/workflow-explore` dry run has shown the verbatim Task and Skill
-permission rule strings, copy those entries too if prompt-free specialist
-delegation is desired.
+### Adding another MCP server
 
-> Note: `athenaeum`'s read-only search tool is intentionally **not** in this
-> allow-list. It will prompt on first use per session like any un-allowed tool;
-> pre-approving it is an optional home-manager `settings.json` follow-up, not an
-> agora change.
+When Home Manager registers a new Claude MCP server, use its exact registration
+name to derive the permission prefix: `mcp__<server-name>__*`. Add that rule to
+the enterprise-managed allow policy only after the server owner documents the
+tools, their read/write effects, and the intended Claude agents. If the
+enterprise policy keeps the server prompting, no Home Manager or agora change
+is necessary; users approve calls individually.
+
+Task and Skill permission rules, if Claude prompts for them, must be copied
+verbatim from the live prompt rather than inferred from MCP naming.
+
+### apm colleagues
+
+`apm install --target claude` does not install any settings file. Colleagues
+must follow their organization’s managed-policy process, or approve prompted
+MCP calls individually.
 
 ## Prerequisite: cerebrum MCP server
 

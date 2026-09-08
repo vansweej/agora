@@ -222,16 +222,12 @@ inferred from documentation alone:
   `render.sh`'s output), 21 skills + 1 rule deployed, `settings.json`
   **not in the write plan** (apm never touches it — confirmed), `.claude/rules/claude.md`
   exactly matches the source instruction body with frontmatter stripped by apm
-itself. `clients/claude/settings.json` and `settings.local.json` are present
-in the repo but are **served outside apm**: Home Manager deploys the latter
-to Jan's `~/.claude/settings.local.json`, leaving corporate-managed
-`~/.claude/settings.json` untouched. apm colleagues can copy the documented
-`permissions.allow` entries manually for prompt-free cerebrum writes, or
-leave them absent — Claude prompts per call and any denied write simply
-doesn't persist (there is no longer a deferred-handoff fallback path; only
-`coordinator`/`brainstorm`/`teach`/`build` attempt cerebrum writes at all).
-The Task and Skill permission strings must be captured from live Claude
-prompts rather than guessed. See `docs/claude-setup.md` for details.
+  itself. Neither agora nor Home Manager owns a Claude Code settings file:
+  Jan's user settings are corporate Bedrock configuration, while an enterprise
+  managed-settings plist has higher precedence over permission rules. Prompt-free
+  MCP access therefore requires an enterprise-managed allow policy; user-level
+  rules cannot override it. See `docs/claude-setup.md` for the current-server
+  request and the onboarding procedure for future servers.
 - `apm compile -t claude` confirmed as a no-op for the instruction ("Claude
   Code reads `.claude/rules/` directly, no further action needed"), and
   `apm compile -g` confirmed as required (generates `AGENTS.md`
