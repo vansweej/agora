@@ -58,11 +58,11 @@
               fi
             done < <(jq -r 'to_entries[] | "\(.key)\t\(.value)"' "$manifest")
 
-            # 15 shared skills + 3 persona agents (brainstorm/teach/build) +
+            # 17 shared skills + 3 persona agents (brainstorm/teach/build) +
             # 3 specialist subagents (explore/spar/plan) + 1 coordinator +
-            # the renderer prompt = 23.
+            # the renderer prompt = 25.
             n=$(jq 'length' "$manifest")
-            [ "$n" -eq 23 ] || { echo "manifest has $n entries, expected 23"; exit 1; }
+            [ "$n" -eq 25 ] || { echo "manifest has $n entries, expected 25"; exit 1; }
 
             [ "$fail" -eq 0 ] || exit 1
             touch $out
