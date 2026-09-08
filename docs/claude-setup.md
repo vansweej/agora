@@ -2,6 +2,10 @@
 
 This document explains the cerebrum MCP integration for Claude Code users of agora.
 
+For real work, the Claude entry point is `/workflow-explore`. Invoke it
+explicitly to run the explore → plan ↔ spar → confirmation → stored-plan
+workflow; ordinary factual questions and casual chat are answered directly.
+
 ## What this covers
 
 The `coordinator` (rendered as the Claude skill `workflow-explore`) and the 3
@@ -85,29 +89,39 @@ behavioral convention, not an enforced sandbox.
 
 ## Allow-list: skip the prompts (optional)
 
-`clients/claude/settings.json` in this repo carries four `permissions.allow`
-entries that pre-approve the four read/write cerebrum tools:
+`clients/claude/settings.local.json` carries Jan's five `permissions.allow`
+entries that pre-approve the cerebrum read/write tools and
+`cerebrum_forget`:
 
 ```json
 "mcp__cerebrum__cerebrum_recall",
 "mcp__cerebrum__cerebrum_recall_by_scope",
 "mcp__cerebrum__cerebrum_remember",
-"mcp__cerebrum__cerebrum_memorize"
+"mcp__cerebrum__cerebrum_memorize",
+"mcp__cerebrum__cerebrum_forget"
 ```
 
-`cerebrum_forget` is intentionally excluded — destructive operations still
-prompt individually.
+`cerebrum_forget` is pre-authorized because the coordinator needs it to
+replace a plan-index entry and sweep its session checkpoints. A completing
+`/workflow-explore` run also invokes the `explore`, `plan`, and `spar` Task
+agents and the `workflow-explore` skill. Capture the exact Task and Skill
+permission strings from the live Claude prompts before adding them to the
+allow-list; their spelling is not documented here and must not be guessed.
 
 ### Jan (home-manager)
 
-Jan's home-manager configuration deploys `clients/claude/settings.json`
-directly to `~/.claude/settings.json`. No manual step needed.
+Jan's home-manager configuration deploys
+`clients/claude/settings.local.json` to `~/.claude/settings.local.json`.
+The local override is merged by Claude Code and leaves the corporate-managed
+Bedrock configuration in `~/.claude/settings.json` untouched. No manual step
+is needed after `home-manager switch`.
 
 ### apm colleagues
 
-apm's `apm install --target claude` never deploys `settings.json` (verified:
-it does not appear in apm's write plan). To get prompt-free cerebrum writes,
-copy the four entries above into your own `~/.claude/settings.json`:
+apm's `apm install --target claude` never deploys `settings.json` or
+`settings.local.json` (verified: neither appears in apm's write plan). To get
+prompt-free cerebrum writes, copy these five entries into your own Claude Code
+settings file:
 
 ```json
 {
@@ -116,7 +130,8 @@ copy the four entries above into your own `~/.claude/settings.json`:
       "mcp__cerebrum__cerebrum_recall",
       "mcp__cerebrum__cerebrum_recall_by_scope",
       "mcp__cerebrum__cerebrum_remember",
-      "mcp__cerebrum__cerebrum_memorize"
+      "mcp__cerebrum__cerebrum_memorize",
+      "mcp__cerebrum__cerebrum_forget"
     ]
   }
 }
@@ -128,6 +143,10 @@ part of the plan-storage sequence (store / memorize / plan-index upsert)
 doesn't happen — there is no deferred fallback path (see above), so the
 allow-list is more than cosmetic for `coordinator`'s workflow, not merely
 ergonomic.
+
+After a live `/workflow-explore` dry run has shown the verbatim Task and Skill
+permission rule strings, copy those entries too if prompt-free specialist
+delegation is desired.
 
 > Note: `athenaeum`'s read-only search tool is intentionally **not** in this
 > allow-list. It will prompt on first use per session like any un-allowed tool;

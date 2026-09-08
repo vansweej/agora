@@ -33,7 +33,7 @@ flowchart LR
 apm.yml                      package: aios-agents-opencode (targets: [opencode])
 .apm/
   agents/*.agent.md          11 agents (4 primary + 3 specialist subagents + 4 dev subagents)
-  skills/*/SKILL.md          16 skills (15 shared + context-audit)
+  skills/*/SKILL.md          18 skills (17 shared + context-audit)
   instructions/              AGENTS.md, as an apm instruction primitive
 clients/claude/
   apm.yml                    package: aios-agents-claude (targets: [claude])
@@ -140,7 +140,7 @@ git commit
 ```
 
 This regenerates every skill under `clients/claude/.apm/skills/` and every
-agent file under `clients/claude/.apm/agents/`, for the 15 shared skills + 3
+agent file under `clients/claude/.apm/agents/`, for the 17 shared skills + 3
 persona agents (`brainstorm teach build`) + 3 specialist subagents (`explore
 spar plan`, rendered as agent files, not skills) + the `coordinator` (rendered
 as the skill `workflow-explore`) — the 2 native skills are untouched — and

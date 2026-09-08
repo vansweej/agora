@@ -14,12 +14,12 @@ description: General AI-OS rules that apply to all work in Claude Code, regardle
 ## Real-work turns
 
 - When the user brings real work — a task, feature, bug, investigation, or
-  plan request — load and drive it through the `workflow-explore` skill. Ground
-  via the `explore` subagent before answering; never emit an ungrounded or
-  hallucinated plan.
-- Do not substitute an ad-hoc investigation or ask whether to proceed: follow
-  the skill's procedure through its confirm gate.
+  plan request — tell them to run `/workflow-explore`. It drives the complete
+  explore → plan ↔ spar → stored-plan workflow.
+- Do not half-run that workflow or substitute an ad-hoc grounding-then-freeform
+  plan: do not invoke `explore` or another specialist outside
+  `/workflow-explore`. Either the user invokes the skill, or answer as an
+  ordinary turn.
 - This does NOT apply to bare factual questions, quick lookups, or casual
   chat — answer those directly.
-- See the `workflow-explore` skill for the full procedure; do not restate it
-  here.
+- See the `workflow-explore` skill for the full procedure.

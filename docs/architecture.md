@@ -94,7 +94,7 @@ flowchart TB
 
 **The drift guard.** `checks.claude-render-fresh` is a pure (no LLM, no
 network) `nix flake check`: it recomputes the sha256 of every source file
-(the 15 shared skills, the 3 manual persona agents `brainstorm teach build`,
+(the 17 shared skills, the 3 manual persona agents `brainstorm teach build`,
 the 3 specialist subagents `explore spar plan`, the `coordinator`, and the
 renderer prompt itself) and compares against
 `clients/claude/.apm/manifest.json`. If any source changed since the last
@@ -222,14 +222,16 @@ inferred from documentation alone:
   `render.sh`'s output), 21 skills + 1 rule deployed, `settings.json`
   **not in the write plan** (apm never touches it — confirmed), `.claude/rules/claude.md`
   exactly matches the source instruction body with frontmatter stripped by apm
-  itself. `clients/claude/settings.json` is present in the repo but is
-  **served outside apm**: home-manager deploys it directly to
-  `~/.claude/settings.json` for Jan; apm colleagues can copy its four
-  `permissions.allow` entries manually for prompt-free cerebrum writes, or
-  leave it as-is — Claude prompts per call and any denied write simply
-  doesn't persist (there is no longer a deferred-handoff fallback path;
-  only `coordinator`/`brainstorm`/`teach`/`build` attempt cerebrum writes at
-  all). See `docs/claude-setup.md` for details.
+itself. `clients/claude/settings.json` and `settings.local.json` are present
+in the repo but are **served outside apm**: Home Manager deploys the latter
+to Jan's `~/.claude/settings.local.json`, leaving corporate-managed
+`~/.claude/settings.json` untouched. apm colleagues can copy the documented
+`permissions.allow` entries manually for prompt-free cerebrum writes, or
+leave them absent — Claude prompts per call and any denied write simply
+doesn't persist (there is no longer a deferred-handoff fallback path; only
+`coordinator`/`brainstorm`/`teach`/`build` attempt cerebrum writes at all).
+The Task and Skill permission strings must be captured from live Claude
+prompts rather than guessed. See `docs/claude-setup.md` for details.
 - `apm compile -t claude` confirmed as a no-op for the instruction ("Claude
   Code reads `.claude/rules/` directly, no further action needed"), and
   `apm compile -g` confirmed as required (generates `AGENTS.md`

@@ -1,5 +1,5 @@
 {
-  "_comment": "Canonical source. Jan's home-manager deploys this to ~/.claude/settings.json. apm never touches settings.json (verified: apm install --target claude, clean export, settings.json not in write plan). Colleagues: copy the four allow entries manually for prompt-free cerebrum writes, or leave as-is — Claude will prompt per call and the plan persona's deferred clause handles any denial gracefully.",
+  "_comment": "Reference allow-list for colleagues. Jan's corporate-managed ~/.claude/settings.json is left untouched; Home Manager deploys settings.local.json as ~/.claude/settings.local.json instead. apm never touches either settings file. The coordinator stores directly, so a denied write simply does not persist; cerebrum_forget is included in Jan's local override because plan-index replacement and session sweep require it.",
   "permissions": {
     "allow": [
       "mcp__cerebrum__cerebrum_recall",

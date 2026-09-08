@@ -13,7 +13,7 @@ a DO-NOT-EDIT header). If you edit any *render source*, you MUST re-run the rend
 and commit the result, or `nix flake check` fails with `STALE: ...`.
 
 Render sources (the only things that trigger a re-render):
-- the **15 shared skills** in `.apm/skills/*` — every dir **except** `context-audit`
+- the **17 shared skills** in `.apm/skills/*` — every dir **except** `context-audit`
 - the **3 manual persona agents** (render to Claude skills): `brainstorm teach build`
 - the **3 specialist subagents** (render to Claude agent files): `explore spar plan`
 - the **coordinator** (renders to the Claude skill `workflow-explore`):
