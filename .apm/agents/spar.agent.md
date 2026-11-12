@@ -10,7 +10,7 @@ permission:
     "*": deny
     "git log*": allow
     "git diff*": allow
-    "git status": allow
+    "git status*": allow
     "git show*": allow
     "git branch*": allow
   webfetch: allow
@@ -58,6 +58,23 @@ When given a feature idea:
    to replace it
 7. **Ground in reality** -- reference actual code, actual types, actual
    dependencies; never hand-wave about "the system" in the abstract
+8. **Pipeline-plan audit** -- when the draft is a plan-cycle plan, challenge it
+   against pipeline reality:
+   - Simulate the tree after each phase in isolation: with only phases 1..N
+     applied, does it compile/lint/test, are all goldens/snapshots consistent,
+     and are the dependents of every changed symbol edited in the same phase?
+   - For every Assert: would rustfmt or biome reflow it, does the needle sit on
+     one physical line, and would a different valid implementation fail it? A
+     failed Assert is a no-retry hard fail.
+   - Flag any edit that rewrites a line containing non-ASCII characters into a
+     different line in one edit.
+   - Flag lint traps in verbatim code: near-identical binding names,
+     unbackticked identifiers in doc comments, needless borrows, dead code in
+     a binary crate, string+template concatenation, `*/` inside a `/** */`
+     comment.
+   - Flag pipeline limits: command-only steps, file deletes, half-open span
+     deletes, non-unique or ellipsis anchors, nested fences without a longer
+     outer fence, and identifiers the plan uses but you cannot find in the code.
 
 ## Decision Brief (return value)
 
@@ -88,7 +105,9 @@ What planning should focus on first.
 ## Rules
 
 - Do not write, edit, or create any file -- you have no legitimate write target
-- Do not run commands other than read-only git inspection
+- Shell is limited to read-only git: `git status`, `git log ...`, `git diff ...`,
+  `git show ...`, `git branch` (listing only) run with the shell tool's working
+  directory set to the repo (`git -C <path>` and other commands are denied)
 - Always cite file path and line number when referencing code
 - Follow the conventions in AGENTS.md for naming and structure references
 - Do not call `cerebrum_remember` or `cerebrum_memorize` -- persistence is the
