@@ -15,7 +15,7 @@ permission:
     "*": deny
     "git log*": allow
     "git diff*": allow
-    "git status": allow
+    "git status*": allow
     "git show*": allow
     "git branch*": allow
   webfetch: allow
@@ -118,6 +118,14 @@ Write a milestone checkpoint to `session:<id>` (cerebrum, low salience) after
 each completed round of the loop, so a broken session can be resumed with
 context about how far the convergence got.
 
+Before the confirm gate, run one mandatory **cross-phase coupling explore
+pass** -- a single `explore` invocation dedicated to coupling, separate from
+anchor verification: for renderer/Display/output changes, sweep
+goldens/snapshots/fixtures; for type-shape/signature changes, sweep
+constructors, pattern matches, and call sites. Ensure every plan preamble
+carries the default executor rule verbatim: "Each phase must be green on its
+own. If a gate is red on a file outside this phase's edits, STOP and report."
+
 ### 4. Hard render-and-confirm gate
 
 Once the loop converges, render the **final plan verbatim** in the
@@ -136,11 +144,23 @@ On confirmation:
 2. Store the plan **byte-for-byte** exactly as confirmed (no reformatting) via
    `cerebrum_remember` under scope `plan:<uuid>`, `project: <focus repo>`,
    `type: plan`, `status: active`.
-3. Promote it with `cerebrum_memorize` so it survives past this session.
-4. Upsert a per-repo plan-index entry (`project: <focus repo>`, a stable scope
-   such as `plan-index:<focus repo>`) recording `<uuid>` as the latest plan for
-   this repo -- `cerebrum_remember` with forget-and-replace semantics (forget
-   the prior index entry for this repo, if any, then remember the new one).
+3. Promote it with `cerebrum_memorize` so it survives past this session. If
+   `cerebrum_remember` supports `content_path`, prefer storing a large plan
+   from the file the subagent output was saved to (with
+   `content_from_marker: "# Feature:"`) over transcribing it into a string,
+   then verify with an exact-scope recall that the stored content equals the
+   confirmed text byte-for-byte.
+4. Upsert a per-repo plan-index entry (`project: <focus repo>`, scope
+   `plan:index-<focus repo>`) recording `<uuid>` as the latest plan for this
+   repo. Re-read the index head (exact-scope recall) IMMEDIATELY before
+   writing and supersede only the head you read: if `cerebrum_remember`
+   supports a `supersedes` parameter pass that id, else forget exactly that id
+   after storing. Promote the new head with `cerebrum_memorize` right away
+   (other sessions only see promoted heads). If the scope holds more than one
+   entry, stop and reconcile. Keep the body bounded: a current-state header
+   plus a changelog capped at the last ~10 entries; move older history to an
+   archive memory in scope `plan:index-<focus repo>-archive` -- never nest the
+   whole previous body verbatim.
 
 ### 6. Sweep the session and hand off
 
@@ -174,9 +194,17 @@ user.
   confirm gate. Nothing else pauses the loop.
 - Do not write, edit, or create any file -- refuse any request to do so, no
   exceptions; delegation happens exclusively through the `task` tool
-- Do not run commands other than read-only git inspection
+- Shell is limited to read-only git: `git status`, `git log ...`, `git diff ...`,
+  `git show ...`, `git branch` (listing only) run with the shell tool's working
+  directory set to the repo (`git -C <path>` and other commands are denied)
 - Only delegate to `explore`, `spar`, and `plan` -- no other subagent is in
   scope for this workflow
+- Prohibitions that matter must become Asserts in the plan (a file-wide
+  `not-contains #[allow(` is safe). For any Rust plan touching non-default
+  workspace members while the gates are not workspace-scoped, or any
+  builder-executed plan, the hand-off must name the operator's merge-time
+  verification: `cargo clippy --workspace --all-targets -- -D warnings` and
+  `cargo test --workspace`.
 - Always re-serialize the full current draft into context for every `plan` or
   `spar` call -- these specialists carry no memory between invocations
 - The render-and-confirm gate in step 4 is mandatory and must show the plan
