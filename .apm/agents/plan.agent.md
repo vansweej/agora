@@ -10,7 +10,7 @@ permission:
     "*": deny
     "git log*": allow
     "git diff*": allow
-    "git status": allow
+    "git status*": allow
   webfetch: ask
 ---
 
@@ -87,9 +87,66 @@ Format rules:
 - Include doc comment requirements in step instructions where applicable
 - A documentation phase (if needed) goes last
 
+## Pipeline-safety rules (plan-cycle plans)
+
+Put a non-instructional preamble blockquote under `# Feature:` that states the
+executor, branch, prerequisites, merge-time verification, risks, and this
+default executor rule verbatim: "Each phase must be green on its own. If a gate
+is red on a file outside this phase's edits, STOP and report."
+
+- Per-phase green audit (in the preamble): for each phase, list every symbol
+  whose signature/shape/rendering/output changes and its dependents found by
+  workspace-wide grep (constructors, pattern matches, call sites,
+  goldens/snapshots/doctests/CLI fixtures, tests asserting old values); every
+  dependent is edited in the SAME phase, or shown already compatible.
+- Quote every edit as a line ``OLD (`<repo-relative path>`):`` followed by a
+  fenced block, then a line `NEW (`<path>`):` followed by a fenced block. Use
+  a 4-backtick outer fence when the quoted text itself contains a
+  triple-backtick fence. Anchors are byte-exact copies of text you READ, occur
+  exactly once in the file (say so), contain no ellipsis, and are never a blank
+  line, bare fence or horizontal rule. Never write a span delete bounded by a
+  surviving anchor: quote the whole block, or replace old-block-plus-surviving-
+  line with just the surviving line.
+- Asserts are formatter- and regeneration-stable: short existence prefixes
+  (`fn name(`, `VariantName {`, `export function name(`), never multi-field
+  struct variants, long signatures, multi-item use/import lists or reflowable
+  expressions. A needle must sit on ONE physical line of the post-formatter
+  file. A failed Assert is a no-retry hard fail; semantic proof belongs in
+  compiled tests. `Assert: test` runs `bun test` and is TypeScript-only.
+- Every prohibition that matters becomes an Assert: a file-wide
+  `not-contains <file> :: #[allow(` is safe; do NOT file-wide
+  `not-contains .expect(` or `.unwrap(` in a Rust file with an in-file
+  `#[cfg(test)]` module (tests use them) -- use `not-contains-outside-tests`
+  if the pipeline supports it, else list them as reviewer items.
+- Never rewrite a line containing non-ASCII characters into a different line
+  in one edit (the edit-scope guard rejects dropping a non-ASCII comment line
+  while adding a same-family comment unless a dropped character survives).
+  Delete the whole line plainly in one edit and add new text in a separate
+  edit, or keep its non-ASCII characters. Write new text in ASCII.
+- Verbatim code must be lint-clean by construction. Rust pedantic: no
+  near-identical binding names (a1/a2, bodya/bodyb), backtick every identifier
+  in every `///` and `//!` line including tests, no needless `&` on values
+  that are already references, no unwrap/expect in library code, no
+  `#[allow]`. TS/biome: one template literal instead of string+template
+  concatenation, no `delete`, never `*/` inside a `/** */` comment, sorted
+  imports. Say at the gate which code was verified only by reading.
+- Pipeline limits: a step that edits no file hard-fails (never a
+  command-only step; append gate commands to the last real edit step); the
+  patcher cannot delete files (express removals as an outcome contract; real
+  `git rm` is a post-run operator action); never mix editing existing source
+  and creating a new test file in one phase; doc-only phases are
+  gate-invisible. Add explicit "nothing to change here" notes where something
+  looks stale but is verified correct.
+- Rust gates: say which crates the pipeline's gates cover. If a workspace has
+  `default-members` and the gates are not workspace-scoped, require an
+  operator-run `cargo clippy --workspace --all-targets -- -D warnings` plus
+  `cargo test --workspace` before merge.
+
 Rules:
 - Do not write, edit, or create files
-- Do not run commands other than read-only git inspection
+- Shell is limited to read-only git: `git status`, `git log ...`, `git diff ...`
+  run with the shell tool's working directory set to the repo (`git -C <path>`
+  and other commands are denied)
 - If the goal is genuinely unclear, state your best-effort interpretation and
   flag the ambiguity under risks rather than blocking -- you cannot ask the
   user directly
