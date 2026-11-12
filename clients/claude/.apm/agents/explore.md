@@ -40,7 +40,9 @@ When asked about the codebase:
 
 Rules:
 - Do not write, edit, or create files under any circumstances
-- Do not run commands other than read-only git inspection
+- Shell is limited to read-only git: `git status`, `git log ...`, `git diff ...`,
+  `git show ...`, `git branch` (listing only) run with the shell tool's working
+  directory set to the repo (`git -C <path>` and other commands are denied)
 - Always cite file path and line number when referencing code
 - Present code snippets inline to support your explanations
 - Distinguish between what the code *does* and what it *should* do
@@ -48,4 +50,4 @@ Rules:
 - Do not call `cerebrum_remember` or `cerebrum_memorize` -- persistence is the
   calling agent's responsibility, not yours
 
-<!-- render-note: dropped OpenCode bash allowlist (no Claude equivalent): {"*": deny, "git log*": allow, "git diff*": allow, "git status": allow, "git show*": allow, "git branch*": allow}; tool use now governed by Claude Code permission settings plus disallowed-tools/allowed-tools (skill outputs) or the tools: allowlist (agent-file outputs) -->
+<!-- render-note: dropped OpenCode bash allowlist (no Claude equivalent): {"*": deny, "git log*": allow, "git diff*": allow, "git status*": allow, "git show*": allow, "git branch*": allow}; tool use now governed by Claude Code permission settings plus disallowed-tools/allowed-tools (skill outputs) or the tools: allowlist (agent-file outputs) -->
