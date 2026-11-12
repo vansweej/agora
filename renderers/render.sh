@@ -26,7 +26,7 @@
 # grill-with-docs) that live alongside in clients/claude/.apm/skills/ are
 # untouched.
 #
-# Usage: renderers/render.sh [--attach http://localhost:PORT]
+# Usage: renderers/render.sh [--server http://localhost:PORT]
 
 set -euo pipefail
 
@@ -38,9 +38,9 @@ MANIFEST="$REPO_ROOT/clients/claude/.apm/manifest.json"
 MODEL="github-copilot/claude-opus-4.8"
 AGENT="renderer"
 
-ATTACH_ARGS=()
-if [[ "${1:-}" == "--attach" ]]; then
-  ATTACH_ARGS=(--attach "$2")
+SERVER_ARGS=()
+if [[ "${1:-}" == "--server" || "${1:-}" == "--attach" ]]; then
+  SERVER_ARGS=(--server "$2")
 fi
 
 SHARED_SKILLS=(
@@ -105,10 +105,10 @@ render_common() {
     "$PROMPT_TEXT
 
 SOURCE PATH: $source_path" \
-    --pure --dir . --agent "$AGENT" \
+    --agent "$AGENT" \
     --model "$MODEL" --format json \
     --file="$source_path" \
-    "${ATTACH_ARGS[@]}")"
+    "${SERVER_ARGS[@]}")"
 
   # Extract .part.text from the LAST {"type":"text",...} JSONL event via jq
   # (not python3: macOS's /usr/bin/python3 xcrun-stub fails to resolve inside
