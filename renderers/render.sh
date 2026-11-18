@@ -27,6 +27,12 @@
 # untouched.
 #
 # Usage: renderers/render.sh [--server http://localhost:PORT]
+#        renderers/render.sh --check-models
+#
+# --check-models only verifies that every rendered agent's `model:` value is
+# listed in the Model map of renderers/opencode-to-claude.md, prints
+# "model map OK" and exits 0 (no wipe, no LLM calls). A normal render runs
+# the same check first and exits 1 before wiping anything if it fails.
 
 set -euo pipefail
 
@@ -39,8 +45,11 @@ MODEL="github-copilot/claude-opus-5.5"
 AGENT="renderer"
 
 SERVER_ARGS=()
+CHECK_ONLY=0
 if [[ "${1:-}" == "--server" || "${1:-}" == "--attach" ]]; then
   SERVER_ARGS=(--server "$2")
+elif [[ "${1:-}" == "--check-models" ]]; then
+  CHECK_ONLY=1
 fi
 
 SHARED_SKILLS=(
@@ -54,6 +63,43 @@ COORDINATOR=coordinator
 if [[ ! -f "$PROMPT_FILE" ]]; then
   echo "error: renderer prompt not found at $PROMPT_FILE" >&2
   exit 1
+fi
+
+# Fail fast, before any wipe or LLM call, if an agent's `model:` is not in
+# the Model map (otherwise the renderer emits RENDER-ERROR mid-run).
+# Reports every unmapped file, then exits 1.
+check_model_map() {
+  local map_section
+  local src
+  local model
+  local bad=0
+  map_section="$(sed -n '/^### Model map$/,/^If you encounter any other value/p' "$PROMPT_FILE")"
+  for name in "${PERSONA_SKILLS[@]}" "${SPECIALIST_SUBAGENTS[@]}" "$COORDINATOR"; do
+    src="$REPO_ROOT/.apm/agents/$name.agent.md"
+    if [[ ! -f "$src" ]]; then
+      echo "error: MODEL-MAP: agent source not found: $src" >&2
+      bad=1
+      continue
+    fi
+    model="$(sed -n 's/^model:[[:space:]]*//p' "$src")"
+    if [[ -z "$model" ]]; then
+      echo "error: MODEL-MAP: no model: line in $src" >&2
+      bad=1
+    elif ! grep -qF "| \`$model\`" <<<"$map_section"; then
+      echo "error: MODEL-MAP: $src uses model '$model', which is not in the Model map of $PROMPT_FILE" >&2
+      bad=1
+    fi
+  done
+  if [[ "$bad" -ne 0 ]]; then
+    echo "error: MODEL-MAP: add the missing model(s) to the '### Model map' table, then re-run" >&2
+    exit 1
+  fi
+}
+
+check_model_map
+if [[ "$CHECK_ONLY" -eq 1 ]]; then
+  echo "model map OK"
+  exit 0
 fi
 
 echo "==> Wiping generated skill subdirectories in $SKILLS_OUT_DIR for idempotent render"

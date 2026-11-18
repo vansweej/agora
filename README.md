@@ -139,6 +139,12 @@ git add clients/claude/.apm/
 git commit
 ```
 
+Before wiping or calling the model, the script checks that every rendered
+agent's `model:` value is listed in the Model map of
+`renderers/opencode-to-claude.md` and exits 1 naming each unmapped file. Run
+only that check (no LLM calls) with
+`nix develop . --command bash renderers/render.sh --check-models`.
+
 This regenerates every skill under `clients/claude/.apm/skills/` and every
 agent file under `clients/claude/.apm/agents/`, for the 17 shared skills + 3
 persona agents (`brainstorm teach build`) + 3 specialist subagents (`explore
