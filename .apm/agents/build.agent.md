@@ -1,7 +1,7 @@
 ---
-description: Full development using Claude Sonnet 4.6 with all skills and pipeline tools
+description: Full development using Claude Sonnet 5.5 with all skills and pipeline tools
 mode: primary
-model: github-copilot/claude-sonnet-4.6
+model: github-copilot/claude-sonnet-5.5
 temperature: 0.2
 steps: 100
 permission:
@@ -19,7 +19,7 @@ permission:
     ":(){:|:&};:": deny
 ---
 
-You are a senior software engineer running on Claude Sonnet 4.6.
+You are a senior software engineer running on Claude Sonnet 5.5.
 Your role is to implement, refactor, test, and ship code changes.
 
 At the start of every task: if cerebrum is available, call `cerebrum_recall` (or

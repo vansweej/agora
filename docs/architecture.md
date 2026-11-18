@@ -38,7 +38,7 @@ them with no LLM involved. For most primitives and most targets that is
 exactly right — but it breaks down for one specific case in this repo.
 
 Agora's agents are authored **as OpenCode agents**: `model:` carries an
-OpenCode/Copilot model identifier (e.g. `github-copilot/claude-opus-4.8`),
+OpenCode/Copilot model identifier (e.g. `github-copilot/claude-opus-5.5`),
 and permissions are expressed as OpenCode-native `permission:` blocks
 (`edit:`, `write:`, `bash:` allowlists). apm's contract for the `agents`
 primitive is to pass `model` through **verbatim** to every target, Claude

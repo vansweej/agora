@@ -147,8 +147,8 @@ the frontmatter, then the body verbatim (Model prose rule applies).
 
 | Source `model:` | Claude `model:` |
 |---|---|
-| `github-copilot/claude-opus-4.8`   | `opus`   |
-| `github-copilot/claude-sonnet-4.6` | `sonnet` |
+| `github-copilot/claude-opus-5.5`   | `opus`   |
+| `github-copilot/claude-sonnet-5.5` | `sonnet` |
 
 If you encounter any other value, stop and emit a single line beginning
 `RENDER-ERROR:` describing the unmapped model. Do not guess.
@@ -220,7 +220,7 @@ second render-note line the same way, immediately after the bash one:
 ### Model prose rule
 
 Some source bodies/descriptions name the model in prose (e.g. "using Claude
-Opus 4.8", "running on Claude Sonnet 4.6"). Where such prose names a model
+Opus 5.5", "running on Claude Sonnet 5.5"). Where such prose names a model
 family+version, keep it **consistent with the rendered `model:`** — i.e. the
 family and version of the *source* `model:` field. Do not change any other
 prose. Do not invent model prose where the source has none.
@@ -231,14 +231,14 @@ prose. Do not invent model prose where the source has none.
 
 ### Specialist subagent → Claude agent file
 
-Source `.apm/agents/spar.agent.md` (`model: github-copilot/claude-opus-4.8`,
+Source `.apm/agents/spar.agent.md` (`model: github-copilot/claude-opus-5.5`,
 `edit: deny`, `write: deny`, `webfetch: allow`, git-only bash allowlist)
 renders to `.claude/agents/spar.md`:
 
 ```
 ---
 name: spar
-description: Socratic sparring partner for feature discussions using Claude Opus 4.8
+description: Socratic sparring partner for feature discussions using Claude Opus 5.5
 tools: Read, Grep, Glob, WebFetch
 model: opus
 ---
@@ -253,7 +253,7 @@ You are a Socratic sparring partner. ... (body verbatim) ...
 ### Coordinator → `workflow-explore` skill
 
 Source `.apm/agents/coordinator.agent.md` (`mode: primary`,
-`model: github-copilot/claude-opus-4.8`, `edit: deny`, `write: deny`,
+`model: github-copilot/claude-opus-5.5`, `edit: deny`, `write: deny`,
 `webfetch: allow`, a `task:` allowlist, git-only bash allowlist) renders to
 `clients/claude/.apm/skills/workflow-explore/SKILL.md`:
 

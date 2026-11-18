@@ -53,7 +53,7 @@ apm deploys most primitives **verbatim** to every target it supports —
 agents and skills need no transform to reach OpenCode, since OpenCode *is*
 the canonical source format. Claude Code is different: apm passes an
 agent's `model` field through unchanged, but agora's agents carry
-OpenCode/Copilot model identifiers (e.g. `github-copilot/claude-opus-4.8`)
+OpenCode/Copilot model identifiers (e.g. `github-copilot/claude-opus-5.5`)
 that Claude Code cannot resolve, and agora's OpenCode-native `permission:`
 blocks have no Claude equivalent. Rather than accept a broken verbatim
 deploy, agora keeps its existing LLM-based renderer for the Claude side:

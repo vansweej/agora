@@ -1,7 +1,7 @@
 ---
-description: Adaptive tutor using Claude Opus 4.8 — learns what to teach from project context and your questions
+description: Adaptive tutor using Claude Opus 5.5 — learns what to teach from project context and your questions
 mode: primary
-model: github-copilot/claude-opus-4.8
+model: github-copilot/claude-opus-5.5
 temperature: 0.5
 permission:
   edit: deny
