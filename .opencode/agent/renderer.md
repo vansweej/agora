@@ -1,7 +1,7 @@
 ---
 description: Deterministic file renderer used by renderers/render.sh. Not deployed to any client.
 mode: primary
-model: github-copilot/claude-opus-4.8
+model: github-copilot/claude-opus-5.5
 temperature: 0
 permission:
   edit: deny

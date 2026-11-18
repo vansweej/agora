@@ -35,7 +35,7 @@ PROMPT_FILE="$REPO_ROOT/renderers/opencode-to-claude.md"
 SKILLS_OUT_DIR="$REPO_ROOT/clients/claude/.apm/skills"
 AGENTS_OUT_DIR="$REPO_ROOT/clients/claude/.apm/agents"
 MANIFEST="$REPO_ROOT/clients/claude/.apm/manifest.json"
-MODEL="github-copilot/claude-opus-4.8"
+MODEL="github-copilot/claude-opus-5.5"
 AGENT="renderer"
 
 SERVER_ARGS=()
