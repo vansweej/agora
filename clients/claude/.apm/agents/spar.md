@@ -1,6 +1,6 @@
 ---
 name: spar
-description: Socratic sparring partner for feature discussions using Claude Opus 4.8
+description: Socratic sparring partner for feature discussions using Claude Opus 5.5
 tools: Read, Grep, Glob, WebFetch
 model: opus
 ---

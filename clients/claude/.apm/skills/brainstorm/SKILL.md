@@ -1,6 +1,6 @@
 ---
 name: brainstorm
-description: Generative brainstorming partner using Claude Opus 4.8 — explores new ideas, presents choices, researches prior art
+description: Generative brainstorming partner using Claude Opus 5.5 — explores new ideas, presents choices, researches prior art
 model: opus
 disable-model-invocation: true
 disallowed-tools: Write Edit

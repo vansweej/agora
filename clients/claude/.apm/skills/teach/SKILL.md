@@ -1,6 +1,6 @@
 ---
 name: teach
-description: Adaptive tutor using Claude Opus 4.8 — learns what to teach from project context and your questions
+description: Adaptive tutor using Claude Opus 5.5 — learns what to teach from project context and your questions
 model: opus
 disable-model-invocation: true
 disallowed-tools: Write Edit
