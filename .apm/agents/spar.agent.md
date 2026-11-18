@@ -1,7 +1,7 @@
 ---
-description: Socratic sparring partner for feature discussions using Claude Opus 4.8
+description: Socratic sparring partner for feature discussions using Claude Opus 5.5
 mode: subagent
-model: github-copilot/claude-opus-4.8
+model: github-copilot/claude-opus-5.5
 temperature: 0.5
 permission:
   edit: deny

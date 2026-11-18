@@ -1,7 +1,7 @@
 ---
-description: Generative brainstorming partner using Claude Opus 4.8 — explores new ideas, presents choices, researches prior art
+description: Generative brainstorming partner using Claude Opus 5.5 — explores new ideas, presents choices, researches prior art
 mode: primary
-model: github-copilot/claude-opus-4.8
+model: github-copilot/claude-opus-5.5
 temperature: 0.6
 permission:
   edit: deny

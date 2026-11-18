@@ -1,7 +1,7 @@
 ---
 description: Orchestrates explore/spar/plan into a single approved, cerebrum-backed plan ready for pipeline execution
 mode: primary
-model: github-copilot/claude-opus-4.8
+model: github-copilot/claude-opus-5.5
 temperature: 0.3
 permission:
   edit: deny
