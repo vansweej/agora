@@ -14,6 +14,9 @@ import { join } from "path";
  *   - VectorBackend (semantic search) when Ollama is running and the index exists.
  *   - FileBackend (static routing) as a fallback.
  *
+ * The workspace defaults to the session directory (ToolContext.directory)
+ * when the caller omits it, so static routing can detect the project type.
+ *
  * The monorepo root is resolved from the AI_CODING_MONOREPO environment
  * variable set by Home Manager.
  */
@@ -58,10 +61,12 @@ export default tool({
       .optional()
       .describe(
         "Absolute path to the workspace directory. " +
-        "Used to detect project type (Rust, C++, TypeScript) for domain skill selection.",
+        "Defaults to the current session directory when omitted. " +
+        "Used to detect project type (Rust, C++, TypeScript, Python, Go, Haskell, " +
+        "Julia, Ruby, Rails, LaTeX) for domain skill selection.",
       ),
   },
-  async execute(args) {
+  async execute(args, context) {
     const monorepoRoot = process.env.AI_CODING_MONOREPO;
     if (!monorepoRoot) {
       return (
@@ -73,7 +78,8 @@ export default tool({
     const bunBin = await resolveBun();
     const argv = ["run", "skill-retrieval", args.action];
     if (args.query) argv.push("--query", args.query);
-    if (args.workspace) argv.push("--workspace", args.workspace);
+    const workspace = args.workspace || context?.directory;
+    if (workspace) argv.push("--workspace", workspace);
 
     try {
       const output = await Bun.$`${bunBin} ${argv}`.cwd(monorepoRoot).text();
