@@ -88,3 +88,14 @@ Rules for sources, reference data, and citations. Typesetting lives in the
 - Never invent a reference; if no source is known, mark the claim as needing one, and offer candidate works only as unverified suggestions outside the document and the .bib
 - Produce `.bib` entries only from verified metadata, with unknown fields flagged
 - Keep the existing key scheme and file layout of the project
+
+## Sources
+
+Locators refer to the copies in the personal library (athenaeum), where available: section numbers or printed pages; "PDF p." marks a PDF page index.
+
+- Page locators in `\autocite` postnotes: Philip Kime, Moritz Wemheuer and Philipp Lehman, "The biblatex Package: Programmable Bibliographies and Citations" (Version 3.22a, September 24, 2026), Sec. 3.15.3 "Page Numbers in Citations"
+- `urldate` for online entries: Kime, Wemheuer and Lehman, "The biblatex Package" (Version 3.22a, 2026), PDF p. 181
+- Protect capitalisation with braces: Kime, Wemheuer and Lehman, "The biblatex Package" (Version 3.22a, 2026), PDF p. 264-265
+- Keep the .bib UTF-8 (`inputenc` covers only part of UTF-8): Kime, Wemheuer and Lehman, "The biblatex Package" (Version 3.22a, 2026), PDF p. 46
+- With biblatex use `biber` (BibTeX's Unicode limits): Philip Kime and Francois Charette, "biber: A backend bibliography processor for biblatex" (biber 2.22, 13th August 2026), Sec. 2.5 "History" and PDF p. 39
+- Unused or undefined entries with `checkcites`: Enrico Gregorio, "The checkcites script" (v2.8), Sec. 1 "Introduction" and Sec. 3 "Usage"
