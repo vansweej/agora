@@ -45,4 +45,4 @@ maintainable code.
 ## Language-Specific Rules
 
 Load the matching language skill for language-specific coding standards, tooling,
-and coverage rules: `rust`, `cpp`, `haskell`, `julia`, `python`, or `go`.
+and coverage rules: `rust`, `cpp`, `haskell`, `julia`, `python`, `go`, or `latex`.

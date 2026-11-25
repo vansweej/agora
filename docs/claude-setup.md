@@ -58,6 +58,8 @@ external resources), `brainstorm` (prior-art research), and `coordinator`
 already globally registered, so no per-agent Claude configuration changes with
 this. Whether any of these MCP tools run without prompting is controlled by
 enterprise-managed Claude settings; see the policy section below.
+The shared skills `academic-writing` and `bibliography` also refer to the
+personal library conditionally (prose-level guidance; no permission change).
 
 ### Why choragos scoping is convention, not enforcement
 

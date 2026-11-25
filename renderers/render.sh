@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # renderers/render.sh — drives the OpenCode -> Claude renderer over the
-# shared-15 skills, the 3 manual persona agents, and the coordinator +
+# shared skills, the 3 manual persona agents, and the coordinator +
 # specialist subagents, producing Claude-format output under
 # clients/claude/.apm/skills/<name>/SKILL.md (skills, personas, coordinator)
 # and clients/claude/.apm/agents/<name>.md (explore/spar/plan subagents).
@@ -53,7 +53,7 @@ elif [[ "${1:-}" == "--check-models" ]]; then
 fi
 
 SHARED_SKILLS=(
-  analyst architect cpp debugger documenter explorer go haskell julia
+  academic-writing analyst architect bibliography cpp debugger documenter explorer go haskell julia latex
   programmer python rails reviewer ruby rust tester typescript
 )
 PERSONA_SKILLS=(brainstorm teach build)

@@ -31,6 +31,7 @@ correctness, and maintainability.
 - If information is missing, **ask up to 3 targeted questions**, then proceed with best-effort notes.
 - Prefer **minimal diffs**: preserve existing tone/structure unless explicitly asked to rewrite.
 - Keep docs **repo-consistent**: match naming, casing, terminology, and formatting used in existing files.
+- For scientific papers and theses, use the `academic-writing` skill (and `bibliography` for references).
 - When adding code blocks:
   - Include language fences (```bash, ```json, etc.)
   - Ensure examples are internally consistent (paths, package names, output)

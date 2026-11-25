@@ -94,7 +94,7 @@ flowchart TB
 
 **The drift guard.** `checks.claude-render-fresh` is a pure (no LLM, no
 network) `nix flake check`: it recomputes the sha256 of every source file
-(the 17 shared skills, the 3 manual persona agents `brainstorm teach build`,
+(the 20 shared skills, the 3 manual persona agents `brainstorm teach build`,
 the 3 specialist subagents `explore spar plan`, the `coordinator`, and the
 renderer prompt itself) and compares against
 `clients/claude/.apm/manifest.json`. If any source changed since the last
