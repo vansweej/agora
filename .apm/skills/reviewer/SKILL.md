@@ -46,4 +46,4 @@ Style, minor improvements, optional refactors.
 ## Language-Specific Rules
 
 Load the matching language skill for its language-specific review checklist:
-`rust`, `cpp`, `haskell`, `julia`, `python`, or `go`.
+`rust`, `cpp`, `haskell`, `julia`, `python`, `go`, or `latex`.

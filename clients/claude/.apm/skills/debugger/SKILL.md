@@ -59,4 +59,4 @@ Other places in the codebase that may have the same problem.
 ## Language-Specific Rules
 
 Load the matching language skill for its language-specific debugging conventions
-and tooling: `rust`, `cpp`, `haskell`, `julia`, `python`, or `go`.
+and tooling: `rust`, `cpp`, `haskell`, `julia`, `python`, `go`, or `latex`.
