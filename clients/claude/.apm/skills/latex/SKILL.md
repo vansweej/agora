@@ -40,7 +40,7 @@ any repository that contains `.tex` sources.
 - Keep one root document and respect its existing name
 - Use `\include` for chapters (forces a page break; enables `\includeonly`) and `\input` for fragments
 - Keep the package list minimal, grouped, and commented where non-obvious
-- Load `hyperref` late in the preamble; the few packages that must come after it (e.g. `cleveref`) go after it
+- Load `hyperref` late in the preamble (a few packages go after it; see the hyperref manual); load `cleveref` last, after `hyperref`
 - Do not load packages that conflict or duplicate functionality
 - Respect the document class the project already uses
 
@@ -100,3 +100,25 @@ any repository that contains `.tex` sources.
 - Final, submission-ready content has no placeholder text or `TODO` markers; drafts may carry clearly flagged notes for missing sources or evidence
 - Prefer clarity over clever macro tricks
 - Add any required package to the preamble together with the code that needs it
+
+## Sources
+
+Locators refer to the copies in the personal library (athenaeum), where available: section numbers or printed pages; "PDF p." marks a PDF page index.
+
+- UTF-8 is the default input encoding, no `inputenc`: LaTeX Project Team, "LaTeX News" (Issue 28, April 2018), "UTF-8: the new default input encoding", p. 1-2
+- LuaLaTeX/XeLaTeX with `fontspec`: Will Robertson, "The fontspec package: Font selection for XeLaTeX and LuaLaTeX" (v2.9h, 2026/08/11), Sec. 3 "Package loading and options"
+- `\include` starts a new page: Tobias Oetiker, Hubert Partl, Irene Hyna and Elisabeth Schlegl, "The Not So Short Introduction to LaTeX2e" (Version 6.4, March 09, 2021), Sec. 1.8 "Big Projects", p. 14
+- Packages loaded before or after `hyperref`: Sebastian Rahtz, Heiko Oberdiek and The LaTeX3 Project, "Hypertext marks in LaTeX: a manual for hyperref" (v7.01t, 2026-11-03), Sec. 11 "Special support for other packages"
+- Load `cleveref` last: Toby Cubitt, "The cleveref package" (2018/03/27), Sec. 13 "Interaction with Other Packages"
+- Overfull boxes: Oetiker et al., "The Not So Short Introduction to LaTeX2e" (Version 6.4, 2021), Chapter 2 "Typesetting Text", p. 18
+- Prefer `biblatex` with `biber`: Philip Kime and Francois Charette, "biber: A backend bibliography processor for biblatex" (biber 2.22, 13th August 2026), Sec. 2.5 "History"
+- `booktabs` tables: Simon Fear, "Publication quality tables in LaTeX" (printed January 14, 2020), abstract and PDF p. 3
+- `siunitx` for numbers and units: Joseph Wright, "siunitx - A comprehensive (SI) units package" (released 2026-11-06), Abstract
+- `amsmath` display environments: American Mathematical Society and LaTeX Project, "User's Guide for the amsmath Package" (Version 2.1, revised 2020-02-18), Sec. 3 "Displayed equations"
+- Avoid `eqnarray`: Oetiker et al., "The Not So Short Introduction to LaTeX2e" (Version 6.4, 2021), Sec. 3.5 "Multiple Equations", p. 52-53
+- Obsolete commands in review (general): Mark Trettin (transl. Juergen Fenn), "An essential guide to LaTeX2e usage: Obsolete commands and packages" (version 1.8.5.7, June 17, 2007), Sec. 1 "Deadly sins"
+- `\label` after `\caption`: Oetiker et al., "The Not So Short Introduction to LaTeX2e" (Version 6.4, 2021), Sec. 2.13 "Floating Bodies", p. 41
+- `latexmk` as build driver and rerun handling: John Collins, "latexmk" (manual page), DESCRIPTION, PDF p. 2
+- `latexmk -xelatex` and `$pdf_mode`: John Collins, "latexmk" (manual page), PDF p. 21 and p. 48
+- `chktex` suppression and rc files: Jens T. Berger Thielemann, "ChkTeX" (v1.7.10, February 26, 2026), `% chktex N` PDF p. 11, named user warnings PDF p. 39, `chktexrc`/`-l` PDF p. 6
+- `latexindent` configuration: Chris Hughes, "latexindent.pl" (V4.0.3, 2026-10-04), Section H "indentconfig options"
