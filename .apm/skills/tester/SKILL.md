@@ -54,4 +54,5 @@ Invalid inputs, failures, exceptions, timeouts.
 ## Language-Specific Rules
 
 Load the matching language skill for its language-specific testing conventions
-and coverage targets: `rust`, `cpp`, `haskell`, `julia`, `python`, `go`, or `latex`.
+and coverage targets: `rust`, `cpp`, `haskell`, `julia`, `python`, `go`,
+`ruby`, `rails`, `typescript`, or `latex`.
