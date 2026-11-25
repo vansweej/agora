@@ -33,13 +33,13 @@ flowchart LR
 apm.yml                      package: aios-agents-opencode (targets: [opencode])
 .apm/
   agents/*.agent.md          11 agents (4 primary + 3 specialist subagents + 4 dev subagents)
-  skills/*/SKILL.md          18 skills (17 shared + context-audit)
+  skills/*/SKILL.md          21 skills (20 shared + context-audit)
   instructions/              AGENTS.md, as an apm instruction primitive
 clients/claude/
   apm.yml                    package: aios-agents-claude (targets: [claude])
   .apm/
     agents/*.md              3 agents (rendered specialist subagents: explore, spar, plan)
-    skills/*/SKILL.md        21 skills (19 rendered + 2 hand-authored native)
+    skills/*/SKILL.md        26 skills (24 rendered + 2 hand-authored native)
     instructions/            CLAUDE.md, as an apm instruction primitive
 renderers/                    LLM renderer prompt + driver (OpenCode -> Claude)
 commands/ tools/ bin/         ai-coding-coupled content (shell out to
@@ -81,7 +81,7 @@ sequenceDiagram
   C->>APM: apm compile -g
   APM->>FS: write ~/.config/opencode/AGENTS.md
   C->>APM: apm install vansweej/agora/clients/claude -t claude -g
-  APM->>FS: 21 skills → ~/.claude/skills/
+  APM->>FS: 26 skills → ~/.claude/skills/
   APM->>FS: 3 agents → ~/.claude/agents/
   APM->>FS: rule deployed directly → ~/.claude/rules/claude.md
   Note over APM,FS: no `apm compile` needed for Claude —<br/>it reads .claude/rules/ directly;<br/>settings.json is never written
@@ -146,12 +146,12 @@ only that check (no LLM calls) with
 `nix develop . --command bash renderers/render.sh --check-models`.
 
 This regenerates every skill under `clients/claude/.apm/skills/` and every
-agent file under `clients/claude/.apm/agents/`, for the 17 shared skills + 3
+agent file under `clients/claude/.apm/agents/`, for the 20 shared skills + 3
 persona agents (`brainstorm teach build`) + 3 specialist subagents (`explore
 spar plan`, rendered as agent files, not skills) + the `coordinator` (rendered
 as the skill `workflow-explore`) — the 2 native skills are untouched — and
 rewrites `clients/claude/.apm/manifest.json` — a `{source: sha256}` map
-covering all 23 sources plus the renderer prompt.
+covering all 27 sources plus the renderer prompt.
 
 `checks.claude-render-fresh` (`nix flake check`) is a **pure** (no LLM, no
 network) safety net: it recomputes each source's hash and fails with
